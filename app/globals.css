@@ -774,6 +774,16 @@
   transform: scaleY(1.05);
 }
 
+/* 自我评价标题强调样式 */
+.about-title-emphasis {
+  background: linear-gradient(135deg, #17f8fa 0%, #036989 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(23, 248, 250, 0.3);
+}
+
 
 
 /* 现代科技背景 */

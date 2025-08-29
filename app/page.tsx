@@ -66,7 +66,7 @@ export default function ResumePage() {
     { name: "AI产品设计", level: 95 },
     { name: "需求分析", level: 90 },
     { name: "团队协作", level: 88 },
-    { name: "Python/数据分析", level: 75 },
+    { name: "数据分析", level: 75 },
     { name: "项目管理", level: 85 },
     { name: "跨部门沟通", level: 92 },
   ]
@@ -181,24 +181,24 @@ export default function ResumePage() {
   return (
     <div className="min-h-screen bg-background tech-grid relative">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="text-xl font-bold tech-gradient-text">袁媛媛</div>
+            <div className="text-xl font-bold tech-gradient-text">个人简历</div>
             <div className="hidden md:flex space-x-8">
               {[
                 { id: "hero", label: "首页" },
                 { id: "experience", label: "工作经历" },
                 { id: "projects", label: "项目经验" },
                 { id: "skills", label: "技能特长" },
-                { id: "about", label: "关于我" },
+                { id: "about", label: "自我评价" },
                 { id: "contact", label: "联系方式" },
               ].map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-sm font-medium transition-all duration-300 hover:scale-110 ${
-                    isClient && activeSection === item.id ? "tech-text" : "tech-text-secondary"
+                  className={`text-sm font-medium nav-item ${
+                    isClient && activeSection === item.id ? "nav-active" : "tech-text-secondary"
                   }`}
                 >
                   {item.label}
@@ -210,7 +210,7 @@ export default function ResumePage() {
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="pt-20 pb-16 px-6 relative">
+      <section id="hero" className="min-h-screen flex items-center justify-center px-6 relative">
         {/* 科技装饰元素 */}
         {isClient && (
           <>
@@ -226,40 +226,42 @@ export default function ResumePage() {
           </>
         )}
         
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center space-y-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold text-balance">
-                <span className="tech-text">袁媛媛</span>
-                <br />
-                <span className="tech-gradient-text">AI产品经理</span>
+                <span className="hero-name">袁媛媛</span>
+                <span className="text-white"> · </span>
+                <span className="text-white">AI产品经理</span>
               </h1>
-              <p className="text-xl md:text-2xl tech-text-secondary max-w-3xl mx-auto text-balance">
-                8年AI/大数据产品经验 · 专注智能化产品落地与团队协作
+              <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto text-balance">
+                8年AI/大数据产品经验
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm tech-text-secondary">
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-white" />
-                15851817312
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="hero-contact-item">
+                <div className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-white/70" />
+                  <span className="hero-contact-text">158-5181-7312</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-white" />
-                15851817312@163.com
+              <div className="hero-contact-item">
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-white/70" />
+                  <span className="hero-contact-text">15851817312@163.com</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-white" />
-                东南大学成贤学院 · 计算机科学与技术
+              <div className="hero-contact-item">
+                <div className="flex items-center gap-3">
+                  <GraduationCap className="w-5 h-5 text-white/70" />
+                  <span className="hero-contact-text">东南大学成贤学院 · 计算机科学与技术</span>
+                </div>
               </div>
             </div>
 
             <div className="flex justify-center gap-4">
-              <Button onClick={() => scrollToSection("about")} size="lg" className="tech-button">
-                了解更多
-                <ChevronDown className="w-4 h-4 ml-2 text-white" />
-              </Button>
-              <Button variant="outline" onClick={() => scrollToSection("contact")} size="lg" className="tech-border">
+              <Button variant="outline" onClick={() => scrollToSection("contact")} size="lg" className="tech-button">
                 联系我
                 <ExternalLink className="w-4 h-4 ml-2 text-white" />
               </Button>
@@ -271,24 +273,24 @@ export default function ResumePage() {
       {/* Experience Section */}
       <section id="experience" className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 tech-gradient-text">工作经历</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 section-title">工作经历</h2>
           <div className="space-y-8">
             {workExperience.map((job, index) => (
               <Card key={index} className="tech-card hover:scale-105 transition-all duration-300">
                 <CardContent className="p-8">
                   <div className="flex flex-col md:flex-row md:items-start gap-6">
                     <div className="md:w-48 flex-shrink-0">
-                      <div className="flex items-center gap-2 text-primary font-medium mb-2">
+                      <div className="flex items-center gap-2 text-white font-medium mb-2">
                         <Calendar className="w-4 h-4 text-white" />
                         {job.period}
                       </div>
-                      <Badge variant="secondary" className="mb-2">
+                      <Badge variant="outline" className="mb-2 job-position">
                         {job.position}
                       </Badge>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold mb-2 tech-text">{job.company}</h3>
-                      <p className="tech-text-secondary leading-relaxed">{job.description}</p>
+                      <h3 className="text-xl font-semibold mb-2 company-name">{job.company}</h3>
+                      <p className="text-white leading-relaxed">{job.description}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -301,35 +303,35 @@ export default function ResumePage() {
       {/* Projects Section */}
       <section id="projects" className="py-16 px-6 bg-white/5 relative">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 tech-gradient-text">核心项目经验</h2>
-          <div className="space-y-8">
+          <h2 className="text-3xl font-bold text-center mb-12 section-title">核心项目经验</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {projects.map((project) => (
-              <Card key={project.id} className="bg-white/5 border border-white/10 backdrop-blur-sm hover:scale-105 transition-all duration-300 max-w-4xl mx-auto">
+              <Card key={project.id} className="project-card hover:scale-105 transition-all duration-300">
                 <CardHeader>
                   <div>
-                    <CardTitle className="text-lg mb-2 tech-text">{project.title}</CardTitle>
-                    <div className="flex items-center gap-4 text-sm tech-text-secondary mb-3">
-                      <span>{project.period}</span>
-                      <Badge variant="outline">{project.role}</Badge>
+                    <CardTitle className="text-lg mb-2 project-title">{project.title}</CardTitle>
+                    <div className="flex items-center gap-4 text-sm mb-3">
+                      <span className="project-period">{project.period}</span>
+                      <Badge variant="outline" className="project-role">{project.role}</Badge>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs hover:scale-105 transition-transform border border-white/20 bg-white/5">
+                      <Badge key={tag} variant="secondary" className="text-xs hover:scale-105 transition-transform project-tag">
                         {tag}
                       </Badge>
                     ))}
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="tech-text-secondary mb-4 leading-relaxed">{project.description}</p>
+                  <p className="project-description mb-4 leading-relaxed">{project.description}</p>
                   
                   <div className="space-y-3">
                     <Separator />
-                    <h4 className="font-medium text-sm gradient-text">主要成果：</h4>
+                    <h4 className="font-medium text-sm project-achievements-title">主要成果：</h4>
                     <ul className="space-y-2">
                       {project.achievements.map((achievement, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm tech-text-secondary">
+                        <li key={index} className="flex items-start gap-2 text-sm project-achievement-item">
                           <Star className="w-3 h-3 text-white mt-1 flex-shrink-0" />
                           {achievement}
                         </li>
@@ -346,94 +348,111 @@ export default function ResumePage() {
       {/* Skills Section */}
       <section id="skills" className="py-12 px-6 relative">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-8 tech-gradient-text">技能特长</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 section-title">技能特长</h2>
           
-          <div className="space-y-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* 左侧：核心技能 */}
-            <div>
-              <h3 className="text-xl font-semibold mb-6 tech-text">核心技能</h3>
-              <div className="flex flex-wrap gap-4">
-                {skills.map((skill, index) => (
-                  <Card key={skill.name} className="tech-card hover:scale-105 transition-all duration-300 flex-1 min-w-[280px]">
-                    <CardContent className="p-3">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-7 h-7 bg-cyan-500/20 rounded-lg flex items-center justify-center">
-                          <Brain className="w-4 h-4 text-white" />
+            <div className="lg:col-span-2">
+              <h3 className="text-xl font-semibold mb-6 section-title">核心技能</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {skills.map((skill, index) => {
+                  const getIcon = (skillName: string) => {
+                    switch (skillName) {
+                      case "AI产品设计":
+                        return <Target className="w-5 h-5 text-white" />
+                      case "需求分析":
+                        return <Brain className="w-5 h-5 text-white" />
+                      case "团队协作":
+                        return <Users className="w-5 h-5 text-white" />
+                      case "数据分析":
+                        return <Database className="w-5 h-5 text-white" />
+                      case "项目管理":
+                        return <TrendingUp className="w-5 h-5 text-white" />
+                      case "跨部门沟通":
+                        return <MessageSquare className="w-5 h-5 text-white" />
+                      default:
+                        return <Brain className="w-5 h-5 text-white" />
+                    }
+                  }
+                  
+                  return (
+                    <Card key={skill.name} className="tech-card hover:scale-105 transition-all duration-300">
+                      <CardContent className="p-2 mb-2">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-7 h-7 flex items-center justify-center">
+                            {getIcon(skill.name)}
+                          </div>
+                          <div>
+                            <div className="font-semibold text-sm text-white">{skill.name}</div>
+                          </div>
                         </div>
-                        <div>
-                          <div className="font-semibold text-sm tech-text">{skill.name}</div>
-                          <div className="text-xs tech-text-secondary">{skill.level}%</div>
+                        <div className="relative">
+                          <Progress value={skill.level} className="h-2.5 skill-progress" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full blur-sm"></div>
                         </div>
-                      </div>
-                      <div className="relative">
-                        <Progress value={skill.level} className="h-1.5" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full blur-sm"></div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  )
+                })}
               </div>
             </div>
 
-            {/* 右侧：技术工具和专业认证 */}
+            {/* 右侧：技术工具和技术证书 */}
             <div className="space-y-8">
               {/* 上边模块：技术工具 */}
               <div>
-                <h3 className="text-xl font-semibold mb-6 tech-text">技术工具</h3>
+                <h3 className="text-xl font-semibold mb-6 section-title">技术工具</h3>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium text-sm mb-3 tech-text-secondary">产品设计</h4>
+                    <h4 className="font-medium text-sm mb-3 text-white">产品设计</h4>
                     <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">XMind</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">Axure</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">PRD</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">PPT</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">XMind</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Axure</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">cursor</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">PPT</Badge>
                     </div>
                   </div>
                   
                   <div>
-                    <h4 className="font-medium text-sm mb-3 tech-text-secondary">技术开发</h4>
+                    <h4 className="font-medium text-sm mb-3 text-white">技术开发</h4>
                     <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">Docker</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">Linux</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">Python</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform tech-border">数据分析</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Docker</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Linux</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Python</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">SQL语言</Badge>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 下边模块：专业认证 */}
+              {/* 下边模块：技术证书 */}
               <div>
-                <h3 className="text-xl font-semibold mb-6 tech-text">专业认证</h3>
+                <h3 className="text-xl font-semibold mb-6 section-title">技术证书</h3>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 flex items-center justify-center">
                       <Award className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-medium text-sm tech-text">人工智能应用工程师（高级）</div>
-                      <div className="text-xs tech-text-secondary">专业技能认证</div>
+                      <div className="font-medium text-sm text-white">人工智能应用工程师（高级）</div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 flex items-center justify-center">
                       <Database className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-medium text-sm tech-text">大数据分析师（高级）</div>
-                      <div className="text-xs tech-text-secondary">数据分析专业认证</div>
+                      <div className="font-medium text-sm text-white">大数据分析师（高级）</div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 flex items-center justify-center">
                       <Code className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="font-medium text-sm tech-text">英语六级</div>
-                      <div className="text-xs tech-text-secondary">具备无障碍读写能力</div>
+                      <div className="font-medium text-sm text-white">英语六级</div>
                     </div>
                   </div>
                 </div>
@@ -446,18 +465,18 @@ export default function ResumePage() {
       {/* About Section */}
       <section id="about" className="py-16 px-6 bg-white/5 relative">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 tech-gradient-text">自我评价</h2>
-          <div className="space-y-8 max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 section-title">自我评价</h2>
+          <div className="space-y-8">
             <div className="flex flex-col lg:flex-row gap-6">
               <Card className="group tech-card hover:scale-105 transition-all duration-300 flex-1">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Target className="w-6 h-6 text-white" />
                   </div>
-                  <CardTitle className="tech-text">产品攻坚能力</CardTitle>
+                  <CardTitle className="about-title-emphasis">产品攻坚能力</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="tech-text-secondary">
+                  <p className="text-white text-justify">
                     深耕产品领域8年，擅长理解用户需求与痛点，能输出针对性解决方案，熟练掌握需求分析、原型设计及文档撰写全流程，保障产品落地质量。
                   </p>
                 </CardContent>
@@ -465,13 +484,13 @@ export default function ResumePage() {
 
               <Card className="group tech-card hover:scale-105 transition-all duration-300 flex-1">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Users className="w-6 h-6 text-white" />
                   </div>
-                  <CardTitle className="tech-text">团队协同能力</CardTitle>
+                  <CardTitle className="about-title-emphasis">团队协同能力</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="tech-text-secondary">
+                  <p className="text-white text-justify">
                     具备项目管理与研发经验，擅长联动研发、算法团队对齐需求，善于跨部门沟通协作，精准评估技术可行性，在需求层面严格把控，高效推动项目闭环。
                   </p>
                 </CardContent>
@@ -479,13 +498,13 @@ export default function ResumePage() {
 
               <Card className="group tech-card hover:scale-105 transition-all duration-300 flex-1">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
-                  <CardTitle className="tech-text">持续学习提升</CardTitle>
+                  <CardTitle className="about-title-emphasis">持续学习提升</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="tech-text-secondary">
+                  <p className="text-white text-justify">
                     拥有强自驱力与自主学习能力，积极向上且责任心强，助力高效达成团队目标。
                   </p>
                 </CardContent>
@@ -498,66 +517,71 @@ export default function ResumePage() {
       {/* Contact Section */}
       <section id="contact" className="py-16 px-6 bg-white/5 relative">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8 tech-gradient-text">联系方式</h2>
-          <p className="text-lg tech-text-secondary mb-12">期待与您探讨AI产品的无限可能</p>
+          <h2 className="text-3xl font-bold mb-8 section-title">联系方式</h2>
+          <p className="text-lg text-white mb-12">期待与您探讨AI产品的无限可能</p>
 
-          <div className="space-y-6 max-w-2xl mx-auto">
-            {/* 电话 */}
-            <Card className="tech-card hover:scale-105 transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-cyan-500/20 rounded-xl flex items-center justify-center hover:scale-110 transition-transform">
-                    <Phone className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold text-lg mb-1 tech-text">电话</div>
-                    <div className="tech-text-secondary text-lg">15851817312</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* 邮箱 */}
-            <Card className="tech-card hover:scale-105 transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-cyan-500/20 rounded-xl flex items-center justify-center hover:scale-110 transition-transform">
-                    <Mail className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold text-lg mb-1 tech-text">邮箱</div>
-                    <div className="tech-text-secondary text-lg">15851817312@163.com</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* 微信二维码 */}
-            <Card className="tech-card hover:scale-105 transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex flex-col items-center gap-6">
-                  <div className="w-16 h-16 bg-cyan-500/20 rounded-xl flex items-center justify-center hover:scale-110 transition-transform">
-                    <MessageSquare className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-lg mb-4 tech-text">微信</div>
-                    {/* 微信二维码占位符 */}
-                    <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mx-auto shadow-lg tech-glow">
-                      <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M3,3H21V5H3V3M3,7H21V9H3V7M3,11H21V13H3V11M3,15H21V17H3V15M3,19H21V21H3V19Z"/>
-                      </svg>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* 左侧：电话和邮箱 */}
+            <div className="space-y-6">
+              {/* 电话 */}
+              <Card className="tech-card hover:scale-105 transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform">
+                      <Phone className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-lg mb-1 text-white">电话</div>
+                      <div className="text-white text-lg">158-5181-7312</div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              {/* 邮箱 */}
+              <Card className="tech-card hover:scale-105 transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform">
+                      <Mail className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-lg mb-1 text-white">邮箱</div>
+                      <div className="text-white text-lg">15851817312@163.com</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* 右侧：微信 */}
+            <div className="flex items-center justify-center">
+              <Card className="tech-card hover:scale-105 transition-all duration-300 w-full">
+                <CardContent className="p-8">
+                  <div className="flex flex-col items-center gap-6">
+                    <div className="w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform">
+                      <MessageSquare className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-center">
+                      <div className="font-semibold text-lg mb-4 text-white">微信</div>
+                      {/* 微信二维码占位符 */}
+                      <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mx-auto shadow-lg tech-glow">
+                        <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M3,3H21V5H3V3M3,7H21V9H3V7M3,11H21V13H3V11M3,15H21V17H3V15M3,19H21V21H3V19Z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="py-8 px-6 border-t border-white/10">
-        <div className="max-w-6xl mx-auto text-center tech-text-secondary">
+        <div className="max-w-6xl mx-auto text-center text-white">
           <p>&copy; 2025 袁媛媛. 专注AI产品创新与落地.</p>
         </div>
       </footer>
