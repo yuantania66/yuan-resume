@@ -184,7 +184,7 @@ export default function ResumePage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="text-xl font-bold tech-gradient-text">个人简历</div>
+            <div className="text-xl font-bold rainbow-white">个人简历</div>
             <div className="hidden md:flex space-x-8">
               {[
                 { id: "hero", label: "首页" },
@@ -260,12 +260,7 @@ export default function ResumePage() {
               </div>
             </div>
 
-            <div className="flex justify-center gap-4">
-              <Button variant="outline" onClick={() => scrollToSection("contact")} size="lg" className="tech-button">
-                联系我
-                <ExternalLink className="w-4 h-4 ml-2 text-white" />
-              </Button>
-            </div>
+
           </div>
         </div>
       </section>
@@ -382,8 +377,12 @@ export default function ResumePage() {
                           <div className="w-7 h-7 flex items-center justify-center">
                             {getIcon(skill.name)}
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <div className="font-semibold text-sm text-white">{skill.name}</div>
+                          </div>
+                          <div className="text-sm text-white">
+                            <span className="text-lg font-semibold">{skill.level}</span>
+                            <span className="text-xs">%</span>
                           </div>
                         </div>
                         <div className="relative">

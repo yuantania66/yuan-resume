@@ -784,6 +784,49 @@
   text-shadow: 0 0 10px rgba(23, 248, 250, 0.3);
 }
 
+/* 五彩斑斓的白色效果 */
+.rainbow-white {
+  background: linear-gradient(
+    45deg,
+    #ffffff 0%,
+    #f0f8ff 10%,
+    #e6f3ff 20%,
+    #f0f8ff 30%,
+    #ffffff 40%,
+    #f8f8ff 50%,
+    #f0f0ff 60%,
+    #ffffff 70%,
+    #f5f5ff 80%,
+    #ffffff 90%,
+    #fafaff 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: rainbow-white-shift 3s ease-in-out infinite;
+  text-shadow: 
+    0 0 3px rgba(255, 255, 255, 0.8),
+    0 0 6px rgba(255, 255, 255, 0.6),
+    0 0 9px rgba(255, 255, 255, 0.4);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes rainbow-white-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+}
+
 
 
 /* 现代科技背景 */
