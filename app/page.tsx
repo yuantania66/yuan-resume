@@ -52,6 +52,9 @@ export default function ResumePage() {
   const [activeSection, setActiveSection] = useState("hero")
   const [mounted, setMounted] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [showCopySuccess, setShowCopySuccess] = useState(false)
+  const [copyMessage, setCopyMessage] = useState("")
+  const [copyPosition, setCopyPosition] = useState({ x: 0, y: 0, tooltipWidth: 0, tooltipHeight: 0 })
 
   useEffect(() => {
     setMounted(true)
@@ -154,6 +157,109 @@ export default function ResumePage() {
     }
     
     console.log('=== scrollToWorkExperience 函数完成 ===')
+  }
+
+  // 复制电话号码到剪贴板
+  const copyPhoneNumber = async (event?: React.MouseEvent) => {
+          // 记录点击位置
+      if (event) {
+        const rect = event.currentTarget.getBoundingClientRect()
+        
+        // 找到对应的 hero-contact-item 元素
+        const heroContactItem = event.currentTarget.closest('.hero-contact-item')
+        if (!heroContactItem) {
+          console.error('未找到 hero-contact-item 元素')
+          return
+        }
+        
+        const heroRect = heroContactItem.getBoundingClientRect()
+        
+        // 计算 hero-contact-item 的实际尺寸和中心点
+        const heroWidth = heroRect.width
+        const heroHeight = heroRect.height
+        const heroLeft = heroRect.left  // hero-contact-item 距离左侧边缘的位置
+        const heroCenterX = heroLeft + heroWidth / 2  // hero-contact-item 中心点距离左侧边缘的位置
+        const buttonCenterY = rect.top + rect.height / 2  // 按钮中心点的Y轴位置
+        const buttonTop = rect.top
+      
+      // 预估tooltip的尺寸（根据文本内容）
+      const tooltipText = "电话号码已复制到剪贴板"
+      const tooltipWidth = Math.max(180, tooltipText.length * 8) // 根据文本长度估算
+      const tooltipHeight = 40
+      
+              // 计算tooltip的定位点
+        // Tooltip距离左侧的位置 = hero-contact-item距离左侧的位置 + hero-contact-item的宽度/2 - Tooltip的宽度/2
+        const tooltipLeft = heroLeft + heroWidth / 2 - tooltipWidth / 2
+        const tooltipCenterX = heroCenterX  // 保持中心X对齐
+        const tooltipBottomY = buttonCenterY - 10 // 间距10px
+        const tooltipTopY = tooltipBottomY - tooltipHeight
+        
+        console.log('=== Tooltip 定位信息 ===')
+        console.log(`按钮宽度: ${rect.width}px`)
+        console.log(`按钮高度: ${rect.height}px`)
+        console.log(`hero-contact-item宽度: ${heroWidth}px`)
+        console.log(`hero-contact-item高度: ${heroHeight}px`)
+        console.log(`hero-contact-item左侧位置: ${heroLeft}px`)
+        console.log(`hero-contact-item中心X: ${heroCenterX}px`)
+        console.log(`按钮中心Y: ${buttonCenterY}px`)
+        console.log(`按钮顶部Y: ${buttonTop}px`)
+        console.log(`Tooltip宽度: ${tooltipWidth}px`)
+        console.log(`Tooltip高度: ${tooltipHeight}px`)
+        console.log(`Tooltip左侧位置: ${tooltipLeft}px`)
+        console.log(`Tooltip中心X: ${tooltipCenterX}px`)
+        console.log(`Tooltip顶部Y: ${tooltipTopY}px`)
+        console.log(`Tooltip底部Y: ${tooltipBottomY}px`)
+      
+      setCopyPosition({
+        x: tooltipLeft,  // 使用计算出的左侧位置
+        y: tooltipTopY,
+        tooltipWidth: tooltipWidth,
+        tooltipHeight: tooltipHeight
+      })
+      
+      console.log('=== 设置Tooltip位置 ===')
+      console.log(`最终位置: x=${tooltipLeft}, y=${tooltipTopY}`)
+      console.log(`Tooltip尺寸: ${tooltipWidth}x${tooltipHeight}`)
+    }
+
+    try {
+      await navigator.clipboard.writeText('158-5181-7312')
+      setCopyMessage("电话号码已复制到剪贴板")
+      setShowCopySuccess(true)
+      setTimeout(() => {
+        setShowCopySuccess(false)
+      }, 1500)
+    } catch (err) {
+      console.error('复制失败:', err)
+      // 降级方案：使用传统方法
+      const textArea = document.createElement('textarea')
+      textArea.value = '158-5181-7312'
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      setCopyMessage("电话号码已复制到剪贴板")
+      setShowCopySuccess(true)
+      setTimeout(() => {
+        setShowCopySuccess(false)
+      }, 1500)
+    }
+  }
+
+  // 检测是否为移动设备
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  }
+
+  // 处理电话点击
+  const handlePhoneClick = (event: React.MouseEvent) => {
+    if (isMobile()) {
+      // 移动端直接拨打
+      window.location.href = 'tel:+8615851817312'
+    } else {
+      // 桌面端复制
+      copyPhoneNumber(event)
+    }
   }
 
   // 项目名称到项目ID的映射
@@ -476,19 +582,25 @@ export default function ResumePage() {
             <div className="flex flex-wrap justify-center gap-4">
               <div className="hero-contact-item">
                 <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-white/70" />
-                  <span className="hero-contact-text">158-5181-7312</span>
+                  <Phone className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
+                  <span 
+                    className="hero-contact-text cursor-pointer" 
+                    onClick={handlePhoneClick}
+                    title={isMobile() ? "点击拨打电话" : "点击复制电话号码"}
+                  >
+                    158-5181-7312
+                  </span>
                 </div>
               </div>
               <div className="hero-contact-item">
                 <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-white/70" />
+                  <Mail className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
                   <span className="hero-contact-text">15851817312@163.com</span>
                 </div>
               </div>
               <div className="hero-contact-item">
                 <div className="flex items-center gap-3">
-                  <GraduationCap className="w-5 h-5 text-white/70" />
+                  <GraduationCap className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
                   <span className="hero-contact-text">东南大学成贤学院 · 计算机科学与技术</span>
                 </div>
               </div>
@@ -786,20 +898,29 @@ export default function ResumePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* 左侧：电话和邮箱 */}
             <div className="space-y-6">
-              {/* 电话 */}
+                            {/* 电话 */}
               <Card className="tech-card hover:scale-105 transition-all duration-300">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-6">
                     <div className="w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform">
                       <Phone className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-left">
-                      <div className="font-semibold text-lg mb-1 text-white">电话</div>
-                      <div className="text-white text-lg">158-5181-7312</div>
                     </div>
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="text-left">
+                      <div className="font-semibold text-lg mb-1 text-white">电话</div>
+                      <a 
+                        href={isMobile() ? "tel:+8615851817312" : "#"}
+                        onClick={!isMobile() ? (e) => { e.preventDefault(); copyPhoneNumber(e); } : undefined}
+                        className="text-white text-lg hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={isMobile() ? "点击拨打电话" : "点击复制电话号码"}
+                      >
+                        158-5181-7312
+                      </a>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* 邮箱 */}
               <Card className="tech-card hover:scale-105 transition-all duration-300">
@@ -810,7 +931,14 @@ export default function ResumePage() {
                     </div>
                     <div className="text-left">
                       <div className="font-semibold text-lg mb-1 text-white">邮箱</div>
-                      <div className="text-white text-lg">15851817312@163.com</div>
+                      <a 
+                        href="mailto:15851817312@163.com?subject=联系袁媛媛&body=您好，我想了解更多关于您的信息。" 
+                        className="text-white text-lg hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        15851817312@163.com
+                      </a>
                     </div>
                   </div>
                 </CardContent>
@@ -864,10 +992,33 @@ export default function ResumePage() {
           aria-label="返回顶部"
         >
           <div className="relative">
-            <ArrowUp className="w-4 h-4 text-white" />
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full blur-sm opacity-50"></div>
+            <ArrowUp className="w-4 h-4 text-white/90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/50 to-blue-500/50 rounded-full blur-sm opacity-50"></div>
           </div>
         </Button>
+      )}
+
+      {/* 复制成功提示 */}
+      {showCopySuccess && (
+        <div 
+          className="fixed z-50 bg-black/90 backdrop-blur-md border border-white/30 text-white px-3 py-1.5 rounded-md shadow-lg animate-tooltip-fade-in text-xs"
+          style={{
+            left: `${copyPosition.x}px`,
+            top: `${copyPosition.y}px`,
+            width: `${copyPosition.tooltipWidth}px`,
+            minWidth: '180px'
+          }}
+        >
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+            <span>{copyMessage}</span>
+          </div>
+          {/* Tooltip 箭头 - 指向下方 */}
+          <div 
+            className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/90"
+            style={{ marginTop: '-1px' }}
+          ></div>
+        </div>
       )}
     </div>
   )
