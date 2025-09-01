@@ -44,6 +44,7 @@ import {
   Cpu,
   Globe,
   MessageSquare,
+  ArrowLeft,
 } from "lucide-react"
 
 export default function ResumePage() {
@@ -114,6 +115,40 @@ export default function ResumePage() {
         behavior: "smooth"
       })
     }
+  }
+
+  // 从项目卡片返回到对应的工作经历卡片
+  const scrollToWorkExperience = (projectTitle: string) => {
+    console.log('=== scrollToWorkExperience 函数开始 ===')
+    console.log('点击了返回按钮，项目标题:', projectTitle)
+    
+    // 查找包含该项目的工作经历及其索引
+    const workExpIndex = workExperience.findIndex(job => job.projectTags && job.projectTags.includes(projectTitle))
+
+    if (workExpIndex !== -1) {
+      console.log('找到对应的工作经历索引:', workExpIndex)
+      // 滚动到对应的工作经历卡片
+      const workExpCard = document.getElementById(`workexp-${workExpIndex}`)
+      if (workExpCard) {
+        const rect = workExpCard.getBoundingClientRect()
+        const elementTop = window.pageYOffset + rect.top
+        const navHeight = 80
+        const offset = 0
+        console.log('滚动到工作经历卡片，目标位置:', elementTop - navHeight - offset)
+        window.scrollTo({
+          top: elementTop - navHeight - offset,
+          behavior: "smooth"
+        })
+      }
+    } else {
+      console.log('未找到对应的工作经历，滚动到工作经历区域')
+      const experienceSection = document.getElementById('experience')
+      if (experienceSection) {
+        experienceSection.scrollIntoView({ behavior: "smooth" })
+      }
+    }
+    
+    console.log('=== scrollToWorkExperience 函数完成 ===')
   }
 
   // 项目名称到项目ID的映射
@@ -258,8 +293,8 @@ export default function ResumePage() {
     { name: "AI产品设计", level: 95 },
     { name: "需求分析", level: 90 },
     { name: "团队协作", level: 88 },
-    { name: "数据分析", level: 75 },
-    { name: "项目管理", level: 85 },
+    { name: "数据分析", level: 85 },
+    { name: "项目管理", level: 75 },
     { name: "跨部门沟通", level: 92 },
   ]
 
@@ -465,7 +500,7 @@ export default function ResumePage() {
           <h2 className="text-3xl font-bold text-center mb-12 section-title">工作经历</h2>
           <div className="space-y-8">
             {workExperience.map((job, index) => (
-              <Card key={index} className="tech-card hover:scale-105 transition-all duration-300">
+              <Card key={index} id={`workexp-${index}`} className="tech-card hover:scale-105 transition-all duration-300">
                 <CardContent className="p-8">
                   <div className="flex flex-col md:flex-row md:items-start gap-6">
                     <div className="md:w-48 flex-shrink-0">
@@ -514,7 +549,7 @@ export default function ResumePage() {
                 {/* 光扫效果元素 */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent opacity-0 hover:opacity-100 transition-all duration-500 pointer-events-none z-10 transform -translate-x-full hover:translate-x-full"></div>
                 <CardHeader>
-                  <div>
+                    <div>
                     <CardTitle className="text-lg mb-2 project-title text-justify">{project.title}</CardTitle>
                     <div className="flex items-center gap-4 text-sm mb-3">
                       <span className="project-period text-justify">{project.period}</span>
@@ -531,18 +566,31 @@ export default function ResumePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="project-description mb-4 leading-relaxed text-justify">{project.description}</p>
-                  
+
                   <div className="space-y-3">
-                    <Separator />
+                      <Separator />
                     <h4 className="font-medium text-sm project-achievements-title text-justify">主要成果：</h4>
-                    <ul className="space-y-2">
-                      {project.achievements.map((achievement, index) => (
+                      <ul className="space-y-2">
+                        {project.achievements.map((achievement, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm project-achievement-item text-justify">
                           <Star className="w-3 h-3 text-white mt-1 flex-shrink-0" />
                           <span className="flex-1">{achievement}</span>
-                        </li>
-                      ))}
-                    </ul>
+                          </li>
+                        ))}
+                      </ul>
+                    
+                    {/* 返回工作经历按钮 */}
+                    <div className="pt-4">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="text-xs hover:scale-105 transition-transform project-return-btn"
+                        onClick={() => scrollToWorkExperience(project.title)}
+                      >
+                        <ArrowLeft className="w-3 h-3 mr-1" />
+查看相关经历
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -595,11 +643,11 @@ export default function ResumePage() {
                             <span className="text-lg font-semibold">{skill.level}</span>
                             <span className="text-xs">%</span>
                           </div>
-                        </div>
+                    </div>
                         <div className="relative">
                           <Progress value={skill.level} className="h-2.5 skill-progress" />
                           <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full blur-sm"></div>
-                        </div>
+                  </div>
                       </CardContent>
                     </Card>
                   )
@@ -610,10 +658,10 @@ export default function ResumePage() {
             {/* 右侧：技术工具和技术证书 */}
             <div className="space-y-8">
               {/* 上边模块：技术工具 */}
-              <div>
+            <div>
                 <h3 className="text-xl font-semibold mb-6 section-title">技术工具</h3>
-                <div className="space-y-4">
-                  <div>
+              <div className="space-y-4">
+                      <div>
                     <h4 className="font-medium text-sm mb-3 text-white">产品设计</h4>
                     <div className="flex flex-wrap gap-2">
                       <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">XMind</Badge>
@@ -621,15 +669,15 @@ export default function ResumePage() {
                       <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">cursor</Badge>
                       <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">PPT</Badge>
                     </div>
-                  </div>
+                      </div>
                   
                   <div>
                     <h4 className="font-medium text-sm mb-3 text-white">技术开发</h4>
                     <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Docker</Badge>
-                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Linux</Badge>
                       <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Python</Badge>
                       <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">SQL语言</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Linux</Badge>
+                      <Badge variant="outline" className="px-3 py-1 text-sm hover:scale-105 transition-transform text-white border-[0.5px] border-white/50">Docker</Badge>
                     </div>
                   </div>
                 </div>
@@ -639,20 +687,20 @@ export default function ResumePage() {
               <div>
                 <h3 className="text-xl font-semibold mb-6 section-title">技术证书</h3>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3">
                     <div className="w-10 h-10 flex items-center justify-center">
                       <Award className="w-5 h-5 text-white" />
                     </div>
-                    <div>
+                      <div>
                       <div className="font-medium text-sm text-white">人工智能应用工程师（高级）</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3">
                     <div className="w-10 h-10 flex items-center justify-center">
                       <Database className="w-5 h-5 text-white" />
                     </div>
-                    <div>
+                      <div>
                       <div className="font-medium text-sm text-white">大数据分析师（高级）</div>
                     </div>
                   </div>
@@ -739,14 +787,14 @@ export default function ResumePage() {
                   <div className="flex items-center gap-6">
                     <div className="w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform">
                       <Phone className="w-8 h-8 text-white" />
-                    </div>
-                    <div className="text-left">
+                  </div>
+                  <div className="text-left">
                       <div className="font-semibold text-lg mb-1 text-white">电话</div>
                       <div className="text-white text-lg">158-5181-7312</div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
 
               {/* 邮箱 */}
               <Card className="tech-card hover:scale-105 transition-all duration-300">
@@ -786,9 +834,9 @@ export default function ResumePage() {
                         /> 
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
             </div>
           </div>
         </div>
