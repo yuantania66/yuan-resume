@@ -643,6 +643,17 @@
   pointer-events: none;
 }
 
+
+
+/* 悬停效果 */
+.project-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(3, 105, 137, 0.3);
+  transform: translateY(-6px) scale(1.02);
+}
+
 .project-title {
   background: linear-gradient(45deg, #17f8fa, #036989);
   -webkit-background-clip: text;

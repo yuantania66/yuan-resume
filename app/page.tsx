@@ -395,7 +395,9 @@ export default function ResumePage() {
           <h2 className="text-3xl font-bold text-center mb-12 section-title">核心项目经验</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {projects.map((project) => (
-              <Card key={project.id} id={`project-${project.id}`} className="project-card hover:scale-105 transition-all duration-300">
+              <Card key={project.id} id={`project-${project.id}`} className="project-card hover:scale-105 transition-all duration-300 relative">
+                {/* 光扫效果元素 */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent opacity-0 hover:opacity-100 transition-all duration-500 pointer-events-none z-10 transform -translate-x-full hover:translate-x-full"></div>
                 <CardHeader>
                   <div>
                     <CardTitle className="text-lg mb-2 project-title text-justify">{project.title}</CardTitle>
