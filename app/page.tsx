@@ -45,11 +45,13 @@ import {
   Globe,
   MessageSquare,
   ArrowLeft,
+  ArrowUp,
 } from "lucide-react"
 
 export default function ResumePage() {
   const [activeSection, setActiveSection] = useState("hero")
   const [mounted, setMounted] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -94,6 +96,9 @@ export default function ResumePage() {
           }
         }
       }
+      
+      // 控制返回顶部按钮的显示
+      setShowScrollTop(window.scrollY > 300)
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -849,6 +854,21 @@ export default function ResumePage() {
           <p className="text-sm text-white/60 mt-2">Version 1.0.0</p>
         </div>
       </footer>
+      
+      {/* 返回顶部按钮 */}
+      {showScrollTop && (
+        <Button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-4 right-4 z-50 tech-scroll-top-btn"
+          style={{ position: 'fixed', bottom: '16px', right: '16px' }}
+          aria-label="返回顶部"
+        >
+          <div className="relative">
+            <ArrowUp className="w-4 h-4 text-white" />
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full blur-sm opacity-50"></div>
+          </div>
+        </Button>
+      )}
     </div>
   )
 }

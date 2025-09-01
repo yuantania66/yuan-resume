@@ -1006,3 +1006,81 @@
     transform: scale(1.02);
   }
 }
+
+/* 返回顶部按钮样式 */
+.tech-scroll-top-btn {
+  position: fixed !important;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(23, 248, 250, 0.05) 0%, rgba(3, 57, 73, 0.1) 100%);
+  border: none;
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  animation: tech-scroll-top-fade-in 0.4s ease-out;
+  overflow: hidden;
+}
+
+.tech-scroll-top-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(23, 248, 250, 0.1) 0%, rgba(3, 57, 73, 0.1) 100%);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.tech-scroll-top-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 8px 25px rgba(23, 248, 250, 0.3),
+    0 0 20px rgba(23, 248, 250, 0.2);
+}
+
+.tech-scroll-top-btn:hover::before {
+  background: linear-gradient(135deg, rgba(23, 248, 250, 0.1) 0%, rgba(3, 57, 73, 0.2) 100%);
+}
+
+.tech-scroll-top-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+@keyframes tech-scroll-top-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 按钮内部图标容器 */
+.tech-scroll-top-btn .relative {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 发光效果 */
+.tech-scroll-top-btn .relative .absolute {
+  animation: tech-scroll-top-glow 2s ease-in-out infinite;
+}
+
+@keyframes tech-scroll-top-glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
