@@ -1,6 +1,25 @@
 "use client"
 
 import { useState, useEffect } from "react"
+
+// 类型定义
+interface WorkExperience {
+  period: string
+  company: string
+  position: string
+  description: string
+  projectTags?: string[]
+}
+
+interface Project {
+  id: string
+  title: string
+  period: string
+  role: string
+  description: string
+  achievements: string[]
+  tags: string[]
+}
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -62,6 +81,64 @@ export default function ResumePage() {
     }
   }
 
+  // 项目名称到项目ID的映射
+  const projectNameToId: { [key: string]: string } = {
+    "车辆舆情分析系统": "vehicle-sentiment",
+    "车联网数据中台": "vehicle-data-platform",
+    "智能试乘试驾系统": "smart-test-drive",
+    "车联网网络分析系统": "network-analysis",
+    "智慧海关AI在线训练平台": "smart-customs",
+    "多国海关大型集装箱设备智能检查产品": "container-inspection"
+  }
+
+  const scrollToProject = (projectName: string) => {
+    const projectId = projectNameToId[projectName]
+    
+    if (!projectId || typeof document === 'undefined') {
+      // 如果项目名称未映射或document未定义，跳转到项目区域
+      const projectsSection = document.getElementById('projects')
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: "smooth" })
+      }
+      return
+    }
+    
+    const projectElement = document.getElementById(`project-${projectId}`)
+    
+    if (projectElement) {
+      // 获取元素坐标信息
+      const rect = projectElement.getBoundingClientRect()
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const absoluteTop = rect.top + scrollTop + 100
+      
+      console.log(`项目: ${projectName}`)
+      console.log(`- 锚点ID: project-${projectId}`)
+      console.log(`- 相对视窗位置: top=${rect.top}px, left=${rect.left}px`)
+      console.log(`- 绝对页面位置: top=${absoluteTop}px (已+100px)`)
+      console.log(`- 元素尺寸: width=${rect.width}px, height=${rect.height}px`)
+      
+      // 使用scrollIntoView而不是window.scrollTo
+      projectElement.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start"
+      })
+      
+      // 添加高亮效果
+      projectElement.classList.add('highlight-project')
+      setTimeout(() => {
+        projectElement.classList.remove('highlight-project')
+      }, 2000)
+    } else {
+      // 如果找不到具体项目，跳转到项目区域
+      const projectsSection = document.getElementById('projects')
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: "smooth" })
+      }
+    }
+  }
+
+
+
   const skills = [
     { name: "AI产品设计", level: 95 },
     { name: "需求分析", level: 90 },
@@ -71,13 +148,14 @@ export default function ResumePage() {
     { name: "跨部门沟通", level: 92 },
   ]
 
-  const workExperience = [
+  const workExperience: WorkExperience[] = [
     {
       period: "2021.03-至今",
       company: "吉利系（亿咖通/寰福/研究院）",
       position: "大数据/AI产品经理",
       description:
         "主持车辆智能诊断数据应用开发，基于车联网中台数据构建机器学习模型，挖掘故障关联特征。设计实时交互接口，实现故障预警信息秒级推送，强化 AI 在车辆售后场景的落地价值。",
+      projectTags: ["车辆舆情分析系统", "车联网数据中台", "智能试乘试驾系统", "车联网网络分析系统"],
     },
     {
       period: "2018.09-2021.03",
@@ -85,6 +163,7 @@ export default function ResumePage() {
       position: "AI产品经理",
       description:
         "负责海关集装箱智能检查 AI 产品及智慧海关训练平台搭建。深度调研场景需求，推动 X 射线图像算法迭代优化，实现云边协同的现场模型更新；制定图像标注规范，培训内外部团队，优化人机作业模式，提升查验效率。",
+      projectTags: ["智慧海关AI在线训练平台", "多国海关大型集装箱设备智能检查产品"],
     },
     {
       period: "2014.07-2018.09",
@@ -95,7 +174,7 @@ export default function ResumePage() {
     },
   ]
 
-  const projects = [
+  const projects: Project[] = [
     {
       id: "smart-customs",
       title: "智慧海关AI在线训练平台",
@@ -285,7 +364,22 @@ export default function ResumePage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold mb-2 company-name">{job.company}</h3>
-                      <p className="text-white leading-relaxed">{job.description}</p>
+                      <p className="text-white leading-relaxed mb-4">{job.description}</p>
+                      {job.projectTags && (
+                        <div className="flex flex-wrap gap-2">
+                          {job.projectTags.map((tag) => (
+                            <Button 
+                              key={tag} 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs hover:scale-105 transition-transform project-tag"
+                              onClick={() => scrollToProject(tag)}
+                            >
+                              {tag}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -301,34 +395,34 @@ export default function ResumePage() {
           <h2 className="text-3xl font-bold text-center mb-12 section-title">核心项目经验</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {projects.map((project) => (
-              <Card key={project.id} className="project-card hover:scale-105 transition-all duration-300">
+              <Card key={project.id} id={`project-${project.id}`} className="project-card hover:scale-105 transition-all duration-300">
                 <CardHeader>
                   <div>
-                    <CardTitle className="text-lg mb-2 project-title">{project.title}</CardTitle>
+                    <CardTitle className="text-lg mb-2 project-title text-justify">{project.title}</CardTitle>
                     <div className="flex items-center gap-4 text-sm mb-3">
-                      <span className="project-period">{project.period}</span>
+                      <span className="project-period text-justify">{project.period}</span>
                       <Badge variant="outline" className="project-role">{project.role}</Badge>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs hover:scale-105 transition-transform project-tag">
+                      <Badge key={tag} variant="secondary" className="text-xs hover:scale-105 transition-transform project-skill-tag">
                         {tag}
                       </Badge>
                     ))}
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="project-description mb-4 leading-relaxed">{project.description}</p>
+                  <p className="project-description mb-4 leading-relaxed text-justify">{project.description}</p>
                   
                   <div className="space-y-3">
                     <Separator />
-                    <h4 className="font-medium text-sm project-achievements-title">主要成果：</h4>
+                    <h4 className="font-medium text-sm project-achievements-title text-justify">主要成果：</h4>
                     <ul className="space-y-2">
                       {project.achievements.map((achievement, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm project-achievement-item">
+                        <li key={index} className="flex items-start gap-2 text-sm project-achievement-item text-justify">
                           <Star className="w-3 h-3 text-white mt-1 flex-shrink-0" />
-                          {achievement}
+                          <span className="flex-1">{achievement}</span>
                         </li>
                       ))}
                     </ul>
@@ -517,7 +611,7 @@ export default function ResumePage() {
       <section id="contact" className="py-16 px-6 bg-white/5 relative">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8 section-title">联系方式</h2>
-          <p className="text-lg text-white mb-12">期待与您探讨AI产品的无限可能</p>
+          <p className="text-lg text-white mb-12">期待有机会与您探讨AI产品</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* 左侧：电话和邮箱 */}
@@ -559,15 +653,20 @@ export default function ResumePage() {
                 <CardContent className="p-8">
                   <div className="flex flex-col items-center gap-6">
                     <div className="w-16 h-16 flex items-center justify-center hover:scale-110 transition-transform">
-                      <MessageSquare className="w-8 h-8 text-white" />
+                      {/* <MessageSquare className="w-8 h-8 text-white" /> */}
+                      <svg className="w-8 h-8 text-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M960.018292 617.246019c0-126.002762-126.101-228.688469-267.646759-228.688469-149.94915 0-268.014126 102.685707-268.014126 228.688469 0 126.205377 118.064976 228.684376 268.014126 228.684376 31.360242 0 63.034639-7.90504 94.555539-15.817244l86.428442 47.359634-23.729447-78.785368C912.906298 751.268432 960.018292 688.301332 960.018292 617.246019zM605.458043 577.828264c-15.699564 0-31.492248-15.616676-31.492248-31.56388 0-15.689331 15.793708-31.492248 31.492248-31.492248 23.852244 0 39.431058 15.802918 39.431058 31.492248C644.889101 562.211589 629.310288 577.828264 605.458043 577.828264zM778.790764 577.828264c-15.58086 0-31.290657-15.616676-31.290657-31.56388 0-15.689331 15.71082-31.492248 31.290657-31.492248 23.61893 0 39.435151 15.802918 39.435151 31.492248C818.225915 562.211589 802.409694 577.828264 778.790764 577.828264zM666.702919 365.928157c10.239202 0 20.342304 0.718361 30.380938 1.840928-27.325345-126.936017-163.051563-221.242893-317.967842-221.242893-173.250856 0-315.13533 118.065999-315.13533 267.974217 0 86.532819 47.24707 157.622924 126.066207 212.738196l-31.472805 94.833879 110.158912-55.258535c39.437198 7.780197 71.055312 15.801894 110.383016 15.801894 9.890254 0 19.698644-0.478907 29.426193-1.240247-6.176676-21.079084-9.720386-43.168172-9.720386-66.032926C398.821823 477.640448 517.023922 365.928157 666.702919 365.928157zM497.291508 280.516882c23.707958 0 39.427988 15.568581 39.427988 39.306214 0 23.617907-15.72003 39.420825-39.427988 39.420825-23.613814 0-47.349401-15.802918-47.349401-39.420825C449.942107 296.085462 473.677695 280.516882 497.291508 280.516882zM276.722974 359.243921c-23.572882 0-47.443545-15.802918-47.443545-39.420825 0-23.737634 23.870664-39.306214 47.443545-39.306214 23.64042 0 39.315424 15.568581 39.315424 39.306214C316.038398 343.441003 300.36237 359.243921 276.722974 359.243921z" fill="currentColor"/>
+                      </svg>
                     </div>
                     <div className="text-center">
                       <div className="font-semibold text-lg mb-4 text-white">微信</div>
-                      {/* 微信二维码占位符 */}
-                      <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mx-auto shadow-lg tech-glow">
-                        <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M3,3H21V5H3V3M3,7H21V9H3V7M3,11H21V13H3V11M3,15H21V17H3V15M3,19H21V21H3V19Z"/>
-                        </svg>
+                      {/* 微信二维码 */}
+                      <div className="w-32 h-32 overflow-hidden mx-auto">
+                        <img 
+                          src="/IMG_8205.jpg" 
+                          alt="微信二维码" 
+                          className="w-full h-full object-cover"
+                        /> 
                       </div>
                     </div>
                   </div>
@@ -581,7 +680,8 @@ export default function ResumePage() {
       {/* Footer */}
       <footer className="py-8 px-6 border-t border-white/10">
         <div className="max-w-6xl mx-auto text-center text-white">
-          <p>&copy; 2025 袁媛媛. 专注AI产品创新与落地.</p>
+          <p>&copy; 2025 袁媛媛. </p>
+          <p className="text-sm text-white/60 mt-2">Version 1.0.0</p>
         </div>
       </footer>
     </div>
