@@ -48,14 +48,38 @@ import {
 
 export default function ResumePage() {
   const [activeSection, setActiveSection] = useState("hero")
-  const [isClient, setIsClient] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setIsClient(true)
+    setMounted(true)
+    
+    // 页面初始化时，延迟打印核心项目中所有项目的位置信息
+    // 延迟确保 DOM 完全渲染完成
+    setTimeout(() => {
+      console.log('=== 页面初始化 - 核心项目位置信息 (延迟1秒) ===')
+      projects.forEach((project) => {
+        const projectElement = document.getElementById(`project-${project.id}`)
+        if (projectElement) {
+          console.log(`项目: ${project.title}`)
+          console.log(`  - 项目ID: ${project.id}`)
+          console.log(`  - 顶部位置: ${projectElement.offsetTop}px`)
+          console.log(`  - 项目高度: ${projectElement.offsetHeight}px`)
+          console.log(`  - 底部位置: ${projectElement.offsetTop + projectElement.offsetHeight}px`)
+          console.log(`  - 元素可见性: ${projectElement.offsetHeight > 0 ? '可见' : '不可见'}`)
+          console.log('---')
+        } else {
+          console.log(`项目: ${project.title} - 元素未找到`)
+        }
+      })
+      
+      // 打印页面整体信息
+      console.log('=== 页面整体信息 ===')
+      console.log(`页面总高度: ${document.documentElement.scrollHeight}px`)
+      console.log(`视窗高度: ${window.innerHeight}px`)
+      console.log(`当前滚动位置: ${window.pageYOffset}px`)
+    }, 1000)
     
     const handleScroll = () => {
-      if (typeof window === 'undefined') return
-      
       const sections = ["hero", "experience", "projects", "skills", "about", "contact"]
       const scrollPosition = window.scrollY + 100
 
@@ -76,8 +100,19 @@ export default function ResumePage() {
   }, [])
 
   const scrollToSection = (sectionId: string) => {
-    if (typeof document !== 'undefined') {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" })
+    const element = document.getElementById(sectionId)
+    if (element) {
+      // 使用 getBoundingClientRect() 获取元素相对于页面的绝对位置
+      const rect = element.getBoundingClientRect()
+      const elementTop = window.pageYOffset + rect.top // 元素相对于页面顶部的绝对位置
+      const navHeight = 80 // 导航栏高度
+      const offset = 0 // 偏移量设为0px
+      
+      // 滚动到计算后的目标位置
+      window.scrollTo({
+        top: elementTop - navHeight - offset,
+        behavior: "smooth"
+      })
     }
   }
 
@@ -92,43 +127,123 @@ export default function ResumePage() {
   }
 
   const scrollToProject = (projectName: string) => {
+    console.log('=== scrollToProject 函数开始 ===')
+    console.log('点击了项目按钮:', projectName)
     const projectId = projectNameToId[projectName]
+    console.log('映射的项目ID:', projectId)
     
-    if (!projectId || typeof document === 'undefined') {
-      // 如果项目名称未映射或document未定义，跳转到项目区域
+    if (!projectId) {
+      console.log('项目ID未找到')
+      // 如果项目名称未映射，跳转到项目区域
       const projectsSection = document.getElementById('projects')
       if (projectsSection) {
+        console.log('跳转到项目区域')
         projectsSection.scrollIntoView({ behavior: "smooth" })
       }
       return
     }
     
+    // 查找核心项目经验区域中的具体项目元素
     const projectElement = document.getElementById(`project-${projectId}`)
+    console.log('找到的项目元素:', projectElement)
+    console.log('项目元素ID:', `project-${projectId}`)
     
     if (projectElement) {
-      // 获取元素坐标信息
+      // 点击项目按钮后，重新计算并打印对应项目的顶部位置信息
+      console.log('=== 点击后重新计算的项目位置信息 ===')
+      console.log(`项目名称: ${projectName}`)
+      console.log(`项目ID: ${projectId}`)
+      console.log(`项目元素: ${projectElement ? '找到' : '未找到'}`)
+      
+      // 使用 getBoundingClientRect() 获取元素相对于视窗的绝对位置
       const rect = projectElement.getBoundingClientRect()
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      const absoluteTop = rect.top + scrollTop + 100
+      const elementTop = window.pageYOffset + rect.top // 元素相对于页面顶部的绝对位置
+      const elementHeight = projectElement.offsetHeight
+      const elementBottom = elementTop + elementHeight
+      const currentScrollTop = window.pageYOffset
       
-      console.log(`项目: ${projectName}`)
-      console.log(`- 锚点ID: project-${projectId}`)
-      console.log(`- 相对视窗位置: top=${rect.top}px, left=${rect.left}px`)
-      console.log(`- 绝对页面位置: top=${absoluteTop}px (已+100px)`)
-      console.log(`- 元素尺寸: width=${rect.width}px, height=${rect.height}px`)
+      console.log(`项目元素相对于视窗的顶部位置: ${rect.top}px`)
+      console.log(`项目元素相对于页面顶部的绝对位置: ${elementTop}px`)
+      console.log(`项目高度: ${elementHeight}px`)
+      console.log(`项目底部位置: ${elementBottom}px`)
+      console.log(`当前滚动位置: ${currentScrollTop}px`)
+      console.log(`页面总高度: ${document.documentElement.scrollHeight}px`)
+      console.log(`视窗高度: ${window.innerHeight}px`)
       
-      // 使用scrollIntoView而不是window.scrollTo
-      projectElement.scrollIntoView({ 
-        behavior: "smooth",
-        block: "start"
+      // 检查计算出的滚动位置是否合理
+      if (elementTop < 100) {
+        console.log('⚠️ 警告：项目位置异常，elementTop < 100px，可能导致跳转到hero区域')
+        console.log('项目元素可能还没有完全渲染，尝试延迟执行滚动...')
+        
+        // 延迟执行滚动，确保元素完全渲染
+        setTimeout(() => {
+          const delayedRect = projectElement.getBoundingClientRect()
+          const delayedElementTop = window.pageYOffset + delayedRect.top
+          console.log(`延迟后的项目绝对位置: ${delayedElementTop}px`)
+          
+          if (delayedElementTop > 100) {
+            const targetScrollTop = delayedElementTop - 80 - 0
+            console.log(`延迟滚动到目标位置: ${targetScrollTop}px`)
+            window.scrollTo({
+              top: targetScrollTop,
+              behavior: "smooth"
+            })
+          } else {
+            console.log('延迟后位置仍然异常，跳转到项目区域')
+            const projectsSection = document.getElementById('projects')
+            if (projectsSection) {
+              projectsSection.scrollIntoView({ behavior: "smooth" })
+            }
+          }
+        }, 100)
+        return
+      }
+      
+      // 计算滚动目标位置，考虑顶部导航栏高度
+      const navHeight = 80 // 导航栏高度
+      const offset = 0 // 偏移量设为0px
+      
+      let targetScrollTop
+      if (Math.abs(currentScrollTop - elementTop) < 10) {
+        // 当前位置接近目标位置，先滚动到元素上方80px
+        targetScrollTop = elementTop - navHeight - offset - 80
+        console.log(`当前位置接近目标，先滚动到元素上方80px，目标位置: ${targetScrollTop}px`)
+      } else {
+        // 正常滚动到目标位置，考虑导航栏高度
+        targetScrollTop = elementTop - navHeight - offset
+        console.log(`正常滚动到项目顶部，目标位置: ${targetScrollTop}px`)
+      }
+      
+      // 滚动到计算后的目标位置
+      console.log('开始滚动到核心项目经验中的对应项目位置...')
+      window.scrollTo({
+        top: targetScrollTop,
+        behavior: "smooth"
       })
       
+      // 如果先滚动到了上方，延迟后滚动到最终位置
+      if (Math.abs(currentScrollTop - elementTop) < 10) {
+        setTimeout(() => {
+          console.log('延迟滚动到最终位置...')
+          const finalTargetScrollTop = elementTop - navHeight - offset
+          window.scrollTo({
+            top: finalTargetScrollTop,
+            behavior: "smooth"
+          })
+        }, 300)
+      }
+      
       // 添加高亮效果
+      console.log('添加高亮效果')
       projectElement.classList.add('highlight-project')
       setTimeout(() => {
         projectElement.classList.remove('highlight-project')
+        console.log('移除高亮效果')
       }, 2000)
+      
+      console.log('=== scrollToProject 函数完成 ===')
     } else {
+      console.log('找不到项目元素，跳转到项目区域')
       // 如果找不到具体项目，跳转到项目区域
       const projectsSection = document.getElementById('projects')
       if (projectsSection) {
@@ -277,7 +392,7 @@ export default function ResumePage() {
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className={`text-sm font-medium nav-item ${
-                    isClient && activeSection === item.id ? "nav-active" : "tech-text-secondary"
+                    mounted && activeSection === item.id ? "nav-active" : "tech-text-secondary"
                   }`}
                 >
                   {item.label}
@@ -291,7 +406,7 @@ export default function ResumePage() {
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center justify-center px-6 relative">
         {/* 科技装饰元素 */}
-        {isClient && (
+        {mounted && (
           <>
             <div className="absolute top-20 left-10 tech-float">
               <Cpu className="w-8 h-8 text-white/50 tech-pulse" />
