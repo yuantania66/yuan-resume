@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation'
 
 export default function LoadingPage() {
   const [displayText, setDisplayText] = useState('')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [showCursor, setShowCursor] = useState(true)
-      const [countdown, setCountdown] = useState(3)
+      const [currentIndex, setCurrentIndex] = useState(0)
+    const [showCursor, setShowCursor] = useState(true)
+    const [countdown, setCountdown] = useState(3)
+    const [isCursorPaused, setIsCursorPaused] = useState(false)
   
   const router = useRouter()
 
@@ -63,18 +64,31 @@ export default function LoadingPage() {
         </div>
       </div>
       
+      {/* 移动光标 - 在线条上游走 */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* 水平移动的光标 */}
+        <div className="cursor-walker cursor-horizontal-1"></div>
+        <div className="cursor-walker cursor-horizontal-2"></div>
+        <div className="cursor-walker cursor-horizontal-3"></div>
+        
+        {/* 垂直移动的光标 */}
+        <div className="cursor-walker cursor-vertical-1"></div>
+        <div className="cursor-walker cursor-vertical-2"></div>
+        <div className="cursor-walker cursor-vertical-3"></div>
+      </div>
+      
 
       
       {/* 扫描线效果 */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#64c8ff]/8 to-transparent animate-scan"></div>
 
       {/* 主要内容 - 电脑屏幕 */}
-      <div className="relative z-10 bg-black">
+      <div className="relative z-10 bg-black border-0 rounded-xl">
         {/* 电脑屏幕框架 */}
-        <div className="bg-transparent border-4 border-[#333333] rounded-lg p-6 shadow-2xl w-[700px] h-[450px] mx-auto relative">
+        <div className="bg-transparent border-4 border-[#333333] rounded-xl p-6 shadow-2xl w-[700px] h-[450px] mx-auto relative">
           
           {/* 控制按钮组 - 在显示屏框架的右下角 */}
-          <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-2">
+          <div className="absolute bottom-4 right-4 z-20">
             {/* 跳过按钮 */}
             <button
               onClick={() => router.push('/main')}
@@ -85,7 +99,7 @@ export default function LoadingPage() {
                 <span>跳过</span>
                 <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M6 4l8 6-8 6V4z" />
-                  <path d="M10 4l8 6-8 6V4z" />
+                  <path d="M6 4l8 6-8 6V4z" />
                 </svg>
               </div>
               
@@ -113,7 +127,7 @@ export default function LoadingPage() {
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#64c8ff]/5 to-transparent rounded-lg pointer-events-none"></div>
           
           {/* 屏幕内容区域 */}
-          <div className="bg-black rounded-md p-6 font-mono w-[620px] h-80 flex flex-col relative">
+          <div className="bg-black rounded-lg p-6 font-mono w-[620px] h-80 flex flex-col relative">
             
             {/* 终端标题栏 */}
             <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#333333] flex-shrink-0">

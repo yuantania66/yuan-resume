@@ -991,13 +991,7 @@
   height: 3px;
   background: #64c8ff;
   border-radius: 50%;
-  box-shadow: 
-    0 0 6px #64c8ff,
-    0 0 12px #64c8ff,
-    0 0 18px #64c8ff;
   z-index: 10;
-  /* 调整阴影位置，与尾巴重合 */
-  filter: drop-shadow(0 0 8px #64c8ff);
 }
 
 /* 光标暂停状态 */
@@ -1009,18 +1003,15 @@
 .cursor-walker::before {
   content: '';
   position: absolute;
-  width: 50px;
+  width: 80px;
   height: 2px;
   background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
   border-radius: 1px;
-  box-shadow: 0 0 4px #64c8ff;
   transform-origin: right center;
-  animation: cursor-tail 0.8s ease-out infinite;
+  /* 去掉尾巴动画，保持静态 */
   /* 尾巴定位在光标后面，确保对齐 */
-  left: -50px;
+  left: -80px;
   top: 0.5px;
-  /* 增强阴影效果，与光标阴影融合 */
-  filter: drop-shadow(0 0 6px rgba(100, 200, 255, 0.8));
 }
 
 /* 为不同方向的光标调整尾巴定位和渐变 */
@@ -1055,21 +1046,7 @@
 }
 
 /* 动态尾巴方向 - 根据运动轨迹调整 */
-/* .cursor-1::before {
-  animation: cursor-tail 0.8s ease-out infinite, cursor-1-direction 8s linear infinite;
-} */
-
-.cursor-1-alt::before {
-  animation: cursor-tail 0.8s ease-out infinite, cursor-1-direction-reverse 10s linear infinite;
-}
-
-.cursor-2::before {
-  animation: cursor-tail 0.8s ease-out infinite, cursor-2-direction 10s linear infinite;
-}
-
-.cursor-2-alt::before {
-  animation: cursor-tail 0.8s ease-out infinite, cursor-2-direction-reverse 12s linear infinite;
-}
+/* 所有尾巴都保持静态，不添加动画 */
 
 /* 光标尾巴动画 */
 @keyframes cursor-tail {
@@ -1098,6 +1075,116 @@
 
 
 /* 光标轨迹效果 */
+
+/* 新增光标样式 - 在线条上游走 */
+.cursor-horizontal-1 {
+  animation: walk-horizontal-1 6s linear infinite;
+}
+
+.cursor-horizontal-1::before {
+  /* 水平向右，尾巴在左侧 */
+  left: -50px;
+  top: 0.5px;
+  background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+}
+
+.cursor-horizontal-2 {
+  animation: walk-horizontal-2 9s linear infinite;
+}
+
+.cursor-horizontal-2::before {
+  /* 水平向左，尾巴在右侧 */
+  left: 3px;
+  top: 0.5px;
+  background: linear-gradient(90deg, #64c8ff, rgba(100, 200, 255, 0.6), transparent);
+}
+
+.cursor-horizontal-3 {
+  animation: walk-horizontal-3 15s linear infinite;
+}
+
+.cursor-horizontal-3::before {
+  /* 水平向右，尾巴在左侧 */
+  left: -50px;
+  top: 0.5px;
+  background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+}
+
+.cursor-vertical-1 {
+  animation: walk-vertical-1 8s linear infinite;
+}
+
+.cursor-vertical-1::before {
+  /* 垂直向下，尾巴在上方 */
+  left: 0.5px;
+  top: -80px;
+  height: 80px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+}
+
+.cursor-vertical-2 {
+  animation: walk-vertical-2 12s linear infinite;
+}
+
+.cursor-vertical-2::before {
+  /* 垂直向上，尾巴在下方 */
+  left: 0.5px;
+  top: 3px;
+  height: 80px;
+  width: 2px;
+  background: linear-gradient(180deg, #64c8ff, rgba(100, 200, 255, 0.6), transparent);
+}
+
+.cursor-vertical-3 {
+  animation: walk-vertical-3 18s linear infinite;
+}
+
+.cursor-vertical-3::before {
+  /* 垂直向下，尾巴在上方 */
+  left: 0.5px;
+  top: -80px;
+  height: 80px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+}
+
+/* 光标暂停状态 */
+.cursor-paused {
+  animation-play-state: paused !important;
+}
+
+/* 水平移动动画 */
+@keyframes walk-horizontal-1 {
+  0% { left: 0%; top: 10%; }
+  100% { left: 100%; top: 10%; }
+}
+
+@keyframes walk-horizontal-2 {
+  0% { left: 100%; top: 50%; }
+  100% { left: 0%; top: 50%; }
+}
+
+@keyframes walk-horizontal-3 {
+  0% { left: 0%; top: 90%; }
+  100% { left: 100%; top: 90%; }
+}
+
+/* 垂直移动动画 */
+@keyframes walk-vertical-1 {
+  0% { left: 10%; top: 0%; }
+  100% { left: 10%; top: 100%; }
+}
+
+@keyframes walk-vertical-2 {
+  0% { left: 50%; top: 100%; }
+  100% { left: 50%; top: 0%; }
+}
+
+@keyframes walk-vertical-3 {
+  0% { left: 90%; top: 0%; }
+  100% { left: 90%; top: 100%; }
+}
 .cursor-trail {
   position: absolute;
   inset: 0;
