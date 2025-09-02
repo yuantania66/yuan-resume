@@ -919,6 +919,285 @@
     linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
   background-attachment: fixed;
   position: relative;
+  animation: background-breathing 8s ease-in-out infinite;
+}
+
+/* 呼吸背景动画 */
+@keyframes background-breathing {
+  0%, 100% {
+    background: 
+      linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    filter: brightness(1) saturate(1);
+  }
+  25% {
+    background: 
+      linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    filter: brightness(1.1) saturate(1.1);
+  }
+  50% {
+    background: 
+      linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    filter: brightness(1.05) saturate(1.05);
+  }
+  75% {
+    background: 
+      linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    filter: brightness(1.15) saturate(1.15);
+  }
+}
+
+/* 浮动光点动画 */
+@keyframes floating-lights {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+/* 动态网格动画 */
+@keyframes grid-pulse {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.05);
+  }
+}
+
+/* 渐变光晕动画 */
+@keyframes gradient-glow {
+  0%, 100% {
+    background: radial-gradient(circle at 20% 80%, rgba(23, 248, 250, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  }
+  50% {
+    background: radial-gradient(circle at 30% 70%, rgba(23, 248, 250, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+  }
+}
+
+/* 游走光标样式 */
+.cursor-walker {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #64c8ff;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 6px #64c8ff,
+    0 0 12px #64c8ff,
+    0 0 18px #64c8ff;
+  z-index: 10;
+  /* 调整阴影位置，与尾巴重合 */
+  filter: drop-shadow(0 0 8px #64c8ff);
+}
+
+/* 光标暂停状态 */
+.cursor-paused {
+  animation-play-state: paused !important;
+}
+
+/* 光标尾巴 */
+.cursor-walker::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+  border-radius: 1px;
+  box-shadow: 0 0 4px #64c8ff;
+  transform-origin: right center;
+  animation: cursor-tail 0.8s ease-out infinite;
+  /* 尾巴定位在光标后面，确保对齐 */
+  left: -50px;
+  top: 0.5px;
+  /* 增强阴影效果，与光标阴影融合 */
+  filter: drop-shadow(0 0 6px rgba(100, 200, 255, 0.8));
+}
+
+/* 为不同方向的光标调整尾巴定位和渐变 */
+.cursor-1::before {
+  /* 水平向右，尾巴在左侧 */
+  left: -50px;
+  top: 0.5px;
+  background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+}
+
+.cursor-1-alt::before {
+  /* 水平向左，尾巴在右侧 */
+  left: 3px;
+  top: 0.5px;
+  background: linear-gradient(90deg, #64c8ff, rgba(100, 200, 255, 0.6), transparent);
+}
+
+.cursor-2::before {
+  /* 垂直向下，尾巴在上方 */
+  left: 0.5px;
+  top: -50px;
+  background: linear-gradient(180deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
+  height: 50px;
+  width: 2px;
+}
+
+.cursor-2-alt::before {
+  /* 垂直向上，尾巴在下方 */
+  left: 0.5px;
+  top: 3px;
+  background: linear-gradient(180deg, #64c8ff, rgba(100, 200, 255, 0.6), transparent);
+}
+
+/* 动态尾巴方向 - 根据运动轨迹调整 */
+/* .cursor-1::before {
+  animation: cursor-tail 0.8s ease-out infinite, cursor-1-direction 8s linear infinite;
+} */
+
+.cursor-1-alt::before {
+  animation: cursor-tail 0.8s ease-out infinite, cursor-1-direction-reverse 10s linear infinite;
+}
+
+.cursor-2::before {
+  animation: cursor-tail 0.8s ease-out infinite, cursor-2-direction 10s linear infinite;
+}
+
+.cursor-2-alt::before {
+  animation: cursor-tail 0.8s ease-out infinite, cursor-2-direction-reverse 12s linear infinite;
+}
+
+/* 光标尾巴动画 */
+@keyframes cursor-tail {
+  0% {
+    opacity: 0.6;
+    transform: scaleX(0);
+  }
+  30% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  70% {
+    opacity: 0.8;
+    transform: scaleX(0.9);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scaleX(0.7);
+  }
+}
+
+
+
+
+
+
+
+/* 光标轨迹效果 */
+.cursor-trail {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cursor-trail.active {
+  opacity: 1;
+}
+
+/* 光标1 - 水平游走 (从左到右) - 超快速 */
+.cursor-1 {
+  animation: walk-horizontal-1 3s linear infinite;
+  /* 连续直线运动 */
+  animation-fill-mode: both;
+}
+
+/* 光标2 - 垂直游走 (从上到下) - 中速 */
+.cursor-2 {
+  animation: walk-vertical-1 9s linear infinite;
+  /* 连续直线运动 */
+  animation-fill-mode: both;
+}
+
+/* 光标1变体 - 水平游走 (从右到左) - 慢速 */
+.cursor-1-alt {
+  animation: walk-horizontal-1-reverse 12s linear infinite;
+  /* 连续直线运动 */
+  animation-fill-mode: both;
+}
+
+/* 光标2变体 - 垂直游走 (从下到上) - 超慢速 */
+.cursor-2-alt {
+  animation: walk-vertical-1-reverse 15s linear infinite;
+  /* 连续直线运动 */
+  animation-fill-mode: both;
+}
+
+/* 水平游走动画 - 沿网格线移动 */
+@keyframes walk-horizontal-1 {
+  0% { left: 0%; top: 15%; }
+  100% { left: 100%; top: 15%; }
+}
+
+/* 水平游走动画 (反向) - 沿网格线移动 */
+@keyframes walk-horizontal-1-reverse {
+  0% { left: 100%; top: 85%; }
+  100% { left: 0%; top: 85%; }
+}
+
+/* 垂直游走动画 - 沿网格线移动 */
+@keyframes walk-vertical-1 {
+  0% { left: 15%; top: 0%; }
+  100% { left: 15%; top: 100%; }
+}
+
+/* 垂直游走动画 (反向) - 沿网格线移动 */
+@keyframes walk-vertical-1-reverse {
+  0% { left: 85%; top: 100%; }
+  100% { left: 85%; top: 0%; }
+}
+
+/* 对角线游走动画 - 已移除 */
+/* 蛇形游走动画 - 已移除 */
+/* 螺旋游走动画 - 已移除 */
+
+/* 动态尾巴方向动画 */
+@keyframes cursor-1-direction {
+  /* 水平游走：始终向右 */
+  0%, 100% { transform: rotate(0deg); }   /* 向右 */
+}
+
+@keyframes cursor-2-direction {
+  /* 垂直游走：始终向下 */
+  0%, 100% { transform: rotate(90deg); }  /* 向下 */
+}
+
+@keyframes cursor-3-direction {
+  /* 对角线游走：已移除 */
+}
+
+@keyframes cursor-4-direction {
+  /* 蛇形游走：已移除 */
+}
+
+@keyframes cursor-5-direction {
+  /* 螺旋游走：已移除 */
+}
+
+/* 反向尾巴方向动画 */
+@keyframes cursor-1-direction-reverse {
+  /* 水平游走反向：始终向左 */
+  0%, 100% { transform: rotate(180deg); } /* 向左 */
+}
+
+@keyframes cursor-2-direction-reverse {
+  /* 垂直游走反向：始终向上 */
+  0%, 100% { transform: rotate(270deg); } /* 向上 */
 }
 
 
@@ -1091,6 +1370,20 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* 扫描线动画 */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.animate-scan {
+  animation: scan 3s linear infinite;
 }
 
 .animate-tooltip-fade-in {
