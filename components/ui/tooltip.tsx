@@ -1,61 +1,92 @@
 "use client"
 
-import * as React from "react"
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import React, { useState, useRef, useEffect } from 'react'
 
-import { cn } from "@/lib/utils"
+interface TooltipProps {
+  content: string
+  children: React.ReactNode
+  position?: 'top' | 'bottom' | 'left' | 'right'
+  className?: string
+}
 
-function TooltipProvider({
-  delayDuration = 0,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+export function Tooltip({ content, children, position = 'top', className = '' }: TooltipProps) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [tooltipStyle, setTooltipStyle] = useState({})
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  const showTooltip = () => {
+    setIsVisible(true)
+  }
+
+  const hideTooltip = () => {
+    setIsVisible(false)  // 恢复隐藏逻辑，鼠标移走后隐藏tooltip
+  }
+
+  useEffect(() => {
+    if (isVisible && triggerRef.current) {
+      const triggerRect = triggerRef.current.getBoundingClientRect()
+      
+      // 查找父级的 hero-contact-item 元素
+      const heroContactItem = triggerRef.current.closest('.hero-contact-item')
+      let containerRect = triggerRect
+      
+      if (heroContactItem) {
+        containerRect = heroContactItem.getBoundingClientRect()
+      }
+      
+      let left = 0
+      let top = 0
+
+      switch (position) {
+        case 'top':
+          left = containerRect.left + containerRect.width / 2
+          top = containerRect.top - 50
+          break
+        case 'bottom':
+          left = containerRect.left + containerRect.width / 2
+          top = containerRect.bottom + 10
+          break
+        case 'left':
+          left = containerRect.left - 10
+          top = containerRect.top + containerRect.height / 2
+          break
+        case 'right':
+          left = containerRect.right + 10
+          top = containerRect.top + containerRect.height / 2
+          break
+      }
+
+
+
+      setTooltipStyle({
+        left: `${left}px`,
+        top: `${top}px`,
+        position: 'fixed',
+        zIndex: 9999,
+        transform: 'translateX(-50%)'
+      })
+    }
+  }, [isVisible, position])
+
   return (
-    <TooltipPrimitive.Provider
-      data-slot="tooltip-provider"
-      delayDuration={delayDuration}
-      {...props}
-    />
+    <div 
+      ref={triggerRef}
+      onMouseEnter={showTooltip}
+      onMouseLeave={hideTooltip}
+      onClick={hideTooltip}
+      className="inline-block"
+    >
+      {children}
+      
+      {isVisible && (
+        <div
+          className={`fixed bg-black text-white px-3 py-2 rounded-md shadow-lg text-xs whitespace-nowrap pointer-events-none ${className}`}
+          style={tooltipStyle}
+        >
+          {content}
+        </div>
+      )}
+    </div>
   )
 }
-
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return (
-    <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
-    </TooltipProvider>
-  )
-}
-
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
-}
-
-function TooltipContent({
-  className,
-  sideOffset = 0,
-  children,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
-  return (
-    <TooltipPrimitive.Portal>
-      <TooltipPrimitive.Content
-        data-slot="tooltip-content"
-        sideOffset={sideOffset}
-        className={cn(
-          "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
-          className
-        )}
-        {...props}
-      >
-        {children}
-        <TooltipPrimitive.Arrow className="bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
-      </TooltipPrimitive.Content>
-    </TooltipPrimitive.Portal>
-  )
-}
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

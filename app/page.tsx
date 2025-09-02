@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { Tooltip } from "@/components/ui/tooltip"
 import {
   Mail,
   Phone,
@@ -59,30 +60,9 @@ export default function ResumePage() {
   useEffect(() => {
     setMounted(true)
     
-    // 页面初始化时，延迟打印核心项目中所有项目的位置信息
-    // 延迟确保 DOM 完全渲染完成
+    // 页面初始化时，延迟确保 DOM 完全渲染完成
     setTimeout(() => {
-      console.log('=== 页面初始化 - 核心项目位置信息 (延迟1秒) ===')
-      projects.forEach((project) => {
-        const projectElement = document.getElementById(`project-${project.id}`)
-        if (projectElement) {
-          console.log(`项目: ${project.title}`)
-          console.log(`  - 项目ID: ${project.id}`)
-          console.log(`  - 顶部位置: ${projectElement.offsetTop}px`)
-          console.log(`  - 项目高度: ${projectElement.offsetHeight}px`)
-          console.log(`  - 底部位置: ${projectElement.offsetTop + projectElement.offsetHeight}px`)
-          console.log(`  - 元素可见性: ${projectElement.offsetHeight > 0 ? '可见' : '不可见'}`)
-          console.log('---')
-        } else {
-          console.log(`项目: ${project.title} - 元素未找到`)
-        }
-      })
-      
-      // 打印页面整体信息
-      console.log('=== 页面整体信息 ===')
-      console.log(`页面总高度: ${document.documentElement.scrollHeight}px`)
-      console.log(`视窗高度: ${window.innerHeight}px`)
-      console.log(`当前滚动位置: ${window.pageYOffset}px`)
+      // DOM 渲染完成后的初始化逻辑
     }, 1000)
     
     const handleScroll = () => {
@@ -127,14 +107,10 @@ export default function ResumePage() {
 
   // 从项目卡片返回到对应的工作经历卡片
   const scrollToWorkExperience = (projectTitle: string) => {
-    console.log('=== scrollToWorkExperience 函数开始 ===')
-    console.log('点击了返回按钮，项目标题:', projectTitle)
-    
     // 查找包含该项目的工作经历及其索引
     const workExpIndex = workExperience.findIndex(job => job.projectTags && job.projectTags.includes(projectTitle))
 
     if (workExpIndex !== -1) {
-      console.log('找到对应的工作经历索引:', workExpIndex)
       // 滚动到对应的工作经历卡片
       const workExpCard = document.getElementById(`workexp-${workExpIndex}`)
       if (workExpCard) {
@@ -142,21 +118,17 @@ export default function ResumePage() {
         const elementTop = window.pageYOffset + rect.top
         const navHeight = 80
         const offset = 0
-        console.log('滚动到工作经历卡片，目标位置:', elementTop - navHeight - offset)
         window.scrollTo({
           top: elementTop - navHeight - offset,
           behavior: "smooth"
         })
       }
     } else {
-      console.log('未找到对应的工作经历，滚动到工作经历区域')
       const experienceSection = document.getElementById('experience')
       if (experienceSection) {
         experienceSection.scrollIntoView({ behavior: "smooth" })
       }
     }
-    
-    console.log('=== scrollToWorkExperience 函数完成 ===')
   }
 
   // 复制电话号码到剪贴板
@@ -167,18 +139,24 @@ export default function ResumePage() {
         
         // 找到对应的 hero-contact-item 元素
         const heroContactItem = event.currentTarget.closest('.hero-contact-item')
-        if (!heroContactItem) {
-          console.error('未找到 hero-contact-item 元素')
-          return
+        let containerElement
+        let containerRect
+        
+        if (heroContactItem) {
+          // 如果在 Hero 区域
+          containerElement = heroContactItem
+          containerRect = heroContactItem.getBoundingClientRect()
+        } else {
+          // 如果在联系方式区域，使用当前点击的元素
+          containerElement = event.currentTarget
+          containerRect = rect
         }
         
-        const heroRect = heroContactItem.getBoundingClientRect()
-        
-        // 计算 hero-contact-item 的实际尺寸和中心点
-        const heroWidth = heroRect.width
-        const heroHeight = heroRect.height
-        const heroLeft = heroRect.left  // hero-contact-item 距离左侧边缘的位置
-        const heroCenterX = heroLeft + heroWidth / 2  // hero-contact-item 中心点距离左侧边缘的位置
+        // 计算容器的实际尺寸和中心点
+        const containerWidth = containerRect.width
+        const containerHeight = containerRect.height
+        const containerLeft = containerRect.left  // 容器距离左侧边缘的位置
+        const containerCenterX = containerLeft + containerWidth / 2  // 容器中心点距离左侧边缘的位置
         const buttonCenterY = rect.top + rect.height / 2  // 按钮中心点的Y轴位置
         const buttonTop = rect.top
       
@@ -188,38 +166,18 @@ export default function ResumePage() {
       const tooltipHeight = 40
       
               // 计算tooltip的定位点
-        // Tooltip距离左侧的位置 = hero-contact-item距离左侧的位置 + hero-contact-item的宽度/2 - Tooltip的宽度/2
-        const tooltipLeft = heroLeft + heroWidth / 2 - tooltipWidth / 2
-        const tooltipCenterX = heroCenterX  // 保持中心X对齐
+        // Tooltip距离左侧的位置 = 容器距离左侧的位置 + 容器的宽度/2 - Tooltip的宽度/2
+        const tooltipLeft = containerLeft + containerWidth / 2 - tooltipWidth / 2
+        const tooltipCenterX = containerCenterX  // 保持中心X对齐
         const tooltipBottomY = buttonCenterY - 10 // 间距10px
         const tooltipTopY = tooltipBottomY - tooltipHeight
         
-        console.log('=== Tooltip 定位信息 ===')
-        console.log(`按钮宽度: ${rect.width}px`)
-        console.log(`按钮高度: ${rect.height}px`)
-        console.log(`hero-contact-item宽度: ${heroWidth}px`)
-        console.log(`hero-contact-item高度: ${heroHeight}px`)
-        console.log(`hero-contact-item左侧位置: ${heroLeft}px`)
-        console.log(`hero-contact-item中心X: ${heroCenterX}px`)
-        console.log(`按钮中心Y: ${buttonCenterY}px`)
-        console.log(`按钮顶部Y: ${buttonTop}px`)
-        console.log(`Tooltip宽度: ${tooltipWidth}px`)
-        console.log(`Tooltip高度: ${tooltipHeight}px`)
-        console.log(`Tooltip左侧位置: ${tooltipLeft}px`)
-        console.log(`Tooltip中心X: ${tooltipCenterX}px`)
-        console.log(`Tooltip顶部Y: ${tooltipTopY}px`)
-        console.log(`Tooltip底部Y: ${tooltipBottomY}px`)
-      
       setCopyPosition({
         x: tooltipLeft,  // 使用计算出的左侧位置
         y: tooltipTopY,
         tooltipWidth: tooltipWidth,
         tooltipHeight: tooltipHeight
       })
-      
-      console.log('=== 设置Tooltip位置 ===')
-      console.log(`最终位置: x=${tooltipLeft}, y=${tooltipTopY}`)
-      console.log(`Tooltip尺寸: ${tooltipWidth}x${tooltipHeight}`)
     }
 
     try {
@@ -273,17 +231,12 @@ export default function ResumePage() {
   }
 
   const scrollToProject = (projectName: string) => {
-    console.log('=== scrollToProject 函数开始 ===')
-    console.log('点击了项目按钮:', projectName)
     const projectId = projectNameToId[projectName]
-    console.log('映射的项目ID:', projectId)
     
     if (!projectId) {
-      console.log('项目ID未找到')
       // 如果项目名称未映射，跳转到项目区域
       const projectsSection = document.getElementById('projects')
       if (projectsSection) {
-        console.log('跳转到项目区域')
         projectsSection.scrollIntoView({ behavior: "smooth" })
       }
       return
@@ -291,16 +244,8 @@ export default function ResumePage() {
     
     // 查找核心项目经验区域中的具体项目元素
     const projectElement = document.getElementById(`project-${projectId}`)
-    console.log('找到的项目元素:', projectElement)
-    console.log('项目元素ID:', `project-${projectId}`)
     
     if (projectElement) {
-      // 点击项目按钮后，重新计算并打印对应项目的顶部位置信息
-      console.log('=== 点击后重新计算的项目位置信息 ===')
-      console.log(`项目名称: ${projectName}`)
-      console.log(`项目ID: ${projectId}`)
-      console.log(`项目元素: ${projectElement ? '找到' : '未找到'}`)
-      
       // 使用 getBoundingClientRect() 获取元素相对于视窗的绝对位置
       const rect = projectElement.getBoundingClientRect()
       const elementTop = window.pageYOffset + rect.top // 元素相对于页面顶部的绝对位置
@@ -308,34 +253,20 @@ export default function ResumePage() {
       const elementBottom = elementTop + elementHeight
       const currentScrollTop = window.pageYOffset
       
-      console.log(`项目元素相对于视窗的顶部位置: ${rect.top}px`)
-      console.log(`项目元素相对于页面顶部的绝对位置: ${elementTop}px`)
-      console.log(`项目高度: ${elementHeight}px`)
-      console.log(`项目底部位置: ${elementBottom}px`)
-      console.log(`当前滚动位置: ${currentScrollTop}px`)
-      console.log(`页面总高度: ${document.documentElement.scrollHeight}px`)
-      console.log(`视窗高度: ${window.innerHeight}px`)
-      
       // 检查计算出的滚动位置是否合理
       if (elementTop < 100) {
-        console.log('⚠️ 警告：项目位置异常，elementTop < 100px，可能导致跳转到hero区域')
-        console.log('项目元素可能还没有完全渲染，尝试延迟执行滚动...')
-        
         // 延迟执行滚动，确保元素完全渲染
         setTimeout(() => {
           const delayedRect = projectElement.getBoundingClientRect()
           const delayedElementTop = window.pageYOffset + delayedRect.top
-          console.log(`延迟后的项目绝对位置: ${delayedElementTop}px`)
           
           if (delayedElementTop > 100) {
             const targetScrollTop = delayedElementTop - 80 - 0
-            console.log(`延迟滚动到目标位置: ${targetScrollTop}px`)
             window.scrollTo({
               top: targetScrollTop,
               behavior: "smooth"
             })
           } else {
-            console.log('延迟后位置仍然异常，跳转到项目区域')
             const projectsSection = document.getElementById('projects')
             if (projectsSection) {
               projectsSection.scrollIntoView({ behavior: "smooth" })
@@ -353,15 +284,12 @@ export default function ResumePage() {
       if (Math.abs(currentScrollTop - elementTop) < 10) {
         // 当前位置接近目标位置，先滚动到元素上方80px
         targetScrollTop = elementTop - navHeight - offset - 80
-        console.log(`当前位置接近目标，先滚动到元素上方80px，目标位置: ${targetScrollTop}px`)
       } else {
         // 正常滚动到目标位置，考虑导航栏高度
         targetScrollTop = elementTop - navHeight - offset
-        console.log(`正常滚动到项目顶部，目标位置: ${targetScrollTop}px`)
       }
       
       // 滚动到计算后的目标位置
-      console.log('开始滚动到核心项目经验中的对应项目位置...')
       window.scrollTo({
         top: targetScrollTop,
         behavior: "smooth"
@@ -370,7 +298,6 @@ export default function ResumePage() {
       // 如果先滚动到了上方，延迟后滚动到最终位置
       if (Math.abs(currentScrollTop - elementTop) < 10) {
         setTimeout(() => {
-          console.log('延迟滚动到最终位置...')
           const finalTargetScrollTop = elementTop - navHeight - offset
           window.scrollTo({
             top: finalTargetScrollTop,
@@ -380,16 +307,11 @@ export default function ResumePage() {
       }
       
       // 添加高亮效果
-      console.log('添加高亮效果')
       projectElement.classList.add('highlight-project')
       setTimeout(() => {
         projectElement.classList.remove('highlight-project')
-        console.log('移除高亮效果')
       }, 2000)
-      
-      console.log('=== scrollToProject 函数完成 ===')
     } else {
-      console.log('找不到项目元素，跳转到项目区域')
       // 如果找不到具体项目，跳转到项目区域
       const projectsSection = document.getElementById('projects')
       if (projectsSection) {
@@ -534,15 +456,16 @@ export default function ResumePage() {
                 { id: "about", label: "自我评价" },
                 { id: "contact", label: "联系方式" },
               ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-sm font-medium nav-item ${
-                    mounted && activeSection === item.id ? "nav-active" : "tech-text-secondary"
-                  }`}
-                >
-                  {item.label}
-                </button>
+                <Tooltip key={item.id} content={`点击跳转到${item.label}区域`} position="bottom">
+                  <button
+                    onClick={() => scrollToSection(item.id)}
+                    className={`text-sm font-medium nav-item ${
+                      mounted && activeSection === item.id ? "nav-active" : "tech-text-secondary"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                </Tooltip>
               ))}
             </div>
           </div>
@@ -580,30 +503,49 @@ export default function ResumePage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="hero-contact-item">
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
-                  <span 
-                    className="hero-contact-text cursor-pointer" 
-                    onClick={handlePhoneClick}
-                    title={isMobile() ? "点击拨打电话" : "点击复制电话号码"}
+              <Tooltip content={isMobile() ? "点击拨打电话" : "点击复制电话号码"} position="bottom">
+                <div className="hero-contact-item">
+                  <div className="flex items-center gap-3">
+                    <Phone className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
+                    <span 
+                      className="hero-contact-text cursor-pointer hover:text-cyan-400 transition-all duration-300" 
+                      onClick={handlePhoneClick}
+                    >
+                      158-5181-7312
+                    </span>
+                  </div>
+                </div>
+              </Tooltip>
+              <Tooltip content="点击发送邀请面试邮件" position="bottom">
+                <div className="hero-contact-item">
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
+                    <span 
+                      className="hero-contact-text cursor-pointer hover:text-cyan-400 transition-all duration-300" 
+                                          onClick={() => {
+                      window.open('mailto:15851817312@163.com?subject=邀请面试&body=您好，%0D%0A%0D%0A我们公司正在招聘AI产品经理岗位，看了您的简历后非常感兴趣，想邀请您参加面试。%0D%0A%0D%0A请问您什么时候方便？%0D%0A%0D%0A期待您的回复！', '_blank')
+                    }}
+                    >
+                      15851817312@163.com
+                    </span>
+                  </div>
+                </div>
+              </Tooltip>
+              <Tooltip content="点击访问学校官网" position="bottom">
+                <div className="hero-contact-item">
+                  <div className="flex items-center gap-3">
+                    <GraduationCap className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
+                    <span 
+                      className="hero-contact-text cursor-pointer hover:text-cyan-400 transition-all duration-300" 
+                                          onClick={() => {
+                      window.open('http://cxxy.seu.edu.cn/64/list.htm', '_blank', 'noopener,noreferrer')
+                    }}
                   >
-                    158-5181-7312
+                    东南大学成贤学院 · 计算机科学与技术
                   </span>
                 </div>
               </div>
-              <div className="hero-contact-item">
-                <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
-                  <span className="hero-contact-text">15851817312@163.com</span>
-                </div>
-              </div>
-              <div className="hero-contact-item">
-                <div className="flex items-center gap-3">
-                  <GraduationCap className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
-                  <span className="hero-contact-text">东南大学成贤学院 · 计算机科学与技术</span>
-                </div>
-              </div>
+            </Tooltip>
             </div>
 
 
@@ -636,7 +578,7 @@ export default function ResumePage() {
                         <div className="flex flex-wrap gap-2">
                           {job.projectTags.map((tag) => (
                             <Button 
-                              key={tag} 
+                              key={tag}
                               variant="outline" 
                               size="sm" 
                               className="text-xs hover:scale-105 transition-transform project-tag"
@@ -675,7 +617,7 @@ export default function ResumePage() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs hover:scale-105 transition-transform project-skill-tag">
+                      <Badge key={tag} variant="secondary" className="text-xs project-skill-tag">
                         {tag}
                       </Badge>
                     ))}
@@ -698,6 +640,7 @@ export default function ResumePage() {
                     
                     {/* 返回工作经历按钮 */}
                     <div className="pt-4">
+                    <Tooltip content="点击查看对应的工作经历" position="top">
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -707,6 +650,7 @@ export default function ResumePage() {
                         <ArrowLeft className="w-3 h-3 mr-1" />
 查看相关经历
                       </Button>
+                    </Tooltip>
                     </div>
                   </div>
                 </CardContent>
@@ -932,10 +876,18 @@ export default function ResumePage() {
                     <div className="text-left">
                       <div className="font-semibold text-lg mb-1 text-white">邮箱</div>
                       <a 
-                        href="mailto:15851817312@163.com?subject=联系袁媛媛&body=您好，我想了解更多关于您的信息。" 
+                        href="mailto:15851817312@163.com?subject=邀请面试&body=您好，%0D%0A%0D%0A我们公司正在招聘AI产品经理岗位，看了您的简历后非常感兴趣，想邀请您参加面试。%0D%0A%0D%0A请问您什么时候方便？%0D%0A%0D%0A期待您的回复！" 
                         className="text-white text-lg hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
                         target="_blank"
                         rel="noopener noreferrer"
+                        title="点击发送邀请面试邮件"
+                        onClick={(e) => {
+                          // 确保链接能正常工作
+                          // 如果默认行为被阻止，手动触发
+                          if (e.defaultPrevented) {
+                            window.open('mailto:15851817312@163.com?subject=邀请面试&body=您好，%0D%0A%0D%0A我们公司正在招聘AI产品经理岗位，看了您的简历后非常感兴趣，想邀请您参加面试。%0D%0A%0D%0A请问您什么时候方便？%0D%0A%0D%0A期待您的回复！', '_blank')
+                          }
+                        }}
                       >
                         15851817312@163.com
                       </a>
@@ -985,17 +937,19 @@ export default function ResumePage() {
       
       {/* 返回顶部按钮 */}
       {showScrollTop && (
-        <Button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-4 right-4 z-50 tech-scroll-top-btn"
-          style={{ position: 'fixed', bottom: '16px', right: '16px' }}
-          aria-label="返回顶部"
-        >
-          <div className="relative">
-            <ArrowUp className="w-4 h-4 text-white/90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/50 to-blue-500/50 rounded-full blur-sm opacity-50"></div>
-          </div>
-        </Button>
+        <Tooltip content="点击返回页面顶部" position="left">
+          <Button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-4 right-4 z-50 tech-scroll-top-btn"
+            style={{ position: 'fixed', bottom: '16px', right: '16px' }}
+            aria-label="返回顶部"
+          >
+            <div className="relative">
+              <ArrowUp className="w-4 h-4 text-white/90" />
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/50 to-blue-500/50 rounded-full blur-sm opacity-50"></div>
+            </div>
+          </Button>
+        </Tooltip>
       )}
 
       {/* 复制成功提示 */}

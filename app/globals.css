@@ -427,6 +427,7 @@
 
 
 .hero-contact-item {
+  position: relative;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
@@ -864,7 +865,6 @@
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
-  transform: scale(1.05) translateY(-2px);
 }
 
 /* 五彩斑斓的白色效果 */
