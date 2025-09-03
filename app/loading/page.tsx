@@ -32,11 +32,11 @@ export default function LoadingPage() {
         remainingTime -= 1
         setCountdown(remainingTime)
         
-                 if (remainingTime <= 0) {
-           clearInterval(countdownTimer)
-           // 暂时关闭自动跳转
-           // router.push('/main')
-         }
+                         if (remainingTime <= 0) {
+          clearInterval(countdownTimer)
+          // 自动跳转功能已开启
+          router.push('/main')
+        }
       }, 1000)
 
       return () => clearInterval(countdownTimer)
@@ -88,7 +88,7 @@ export default function LoadingPage() {
         <div className="bg-transparent border-4 border-[#333333] rounded-xl p-6 shadow-2xl w-[700px] h-[450px] mx-auto relative">
           
           {/* 控制按钮组 - 在显示屏框架的右下角 */}
-          <div className="absolute bottom-4 right-4 z-20">
+          <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-2">
             {/* 跳过按钮 */}
             <button
               onClick={() => router.push('/main')}
@@ -113,7 +113,7 @@ export default function LoadingPage() {
             
             {/* 自动跳转倒计时提示 */}
             {currentIndex >= fullText.length && (
-              <div className="text-white/70 text-xs">
+              <div className="text-white/70 text-xs text-center">
                 <span>自动跳转倒计时: </span>
                 <span className="font-bold">{countdown}</span>
                 <span> 秒</span>
