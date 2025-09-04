@@ -15,7 +15,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-black flex items-center justify-center">
       <div className="text-center text-white">
         <div className="text-2xl font-mono mb-4">正在跳转...</div>
-        <div className="text-green-400 animate-pulse">Loading...</div>
+        <div className="text-blue-400 animate-pulse">Loading...</div>
       </div>
     </div>
   )
