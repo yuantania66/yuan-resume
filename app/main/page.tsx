@@ -1007,87 +1007,101 @@ export default function ResumePage() {
                       <div 
                         className="w-32 h-32 overflow-hidden mx-auto cursor-pointer relative group"
                         onClick={async () => {
+                          const phoneNumber = '15851817312';
+                          
                           try {
-                            // 复制微信号到剪贴板
-                            await navigator.clipboard.writeText('15851817312');
+                            // 优先使用现代剪贴板API
+                            if (navigator.clipboard && window.isSecureContext) {
+                              await navigator.clipboard.writeText(phoneNumber);
+                            } else {
+                              // 备用方法：创建临时文本区域
+                              const textArea = document.createElement('textarea');
+                              textArea.value = phoneNumber;
+                              textArea.style.position = 'fixed';
+                              textArea.style.left = '-999999px';
+                              textArea.style.top = '-999999px';
+                              document.body.appendChild(textArea);
+                              textArea.focus();
+                              textArea.select();
+                              document.execCommand('copy');
+                              document.body.removeChild(textArea);
+                            }
                             
                             // 显示成功提示
-                            alert('微信号已复制，正在打开微信...');
+                            alert('微信号已复制到剪贴板！');
                             
-                            // 尝试跳转到微信
-                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                            const isAndroid = /Android/.test(navigator.userAgent);
+                            // 延迟后尝试打开微信
+                            setTimeout(() => {
+                              const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                              const isAndroid = /Android/.test(navigator.userAgent);
+                              
+                              if (isIOS || isAndroid) {
+                                // 移动端尝试打开微信
+                                try {
+                                  window.location.href = 'weixin://';
+                                } catch (e) {
+                                  // 如果微信协议失败，提示用户手动打开
+                                  alert('请手动打开微信，在添加好友中粘贴微信号');
+                                }
+                              } else {
+                                // 桌面端提示
+                                alert('请使用手机微信添加好友，微信号已复制到剪贴板');
+                              }
+                            }, 500);
                             
-                            if (isIOS || isAndroid) {
-                              // 移动端尝试打开微信
-                              window.location.href = 'weixin://';
-                            } else {
-                              // 桌面端提示
-                              alert('请使用手机微信添加好友');
-                            }
                           } catch (err) {
-                            // 如果复制失败，使用备用方法
-                            const textArea = document.createElement('textarea');
-                            textArea.value = '15851817312';
-                            document.body.appendChild(textArea);
-                            textArea.select();
-                            document.execCommand('copy');
-                            document.body.removeChild(textArea);
-                            
-                            alert('微信号已复制，正在打开微信...');
-                            
-                            // 尝试跳转到微信
-                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                            const isAndroid = /Android/.test(navigator.userAgent);
-                            
-                            if (isIOS || isAndroid) {
-                              window.location.href = 'weixin://';
-                            } else {
-                              alert('请使用手机微信添加好友');
-                            }
+                            console.error('复制失败:', err);
+                            alert('复制失败，请手动复制微信号：15851817312');
                           }
                         }}
                         onContextMenu={async (e) => {
                           e.preventDefault();
                           
+                          const phoneNumber = '15851817312';
+                          
                           try {
-                            // 复制微信号到剪贴板
-                            await navigator.clipboard.writeText('15851817312');
+                            // 优先使用现代剪贴板API
+                            if (navigator.clipboard && window.isSecureContext) {
+                              await navigator.clipboard.writeText(phoneNumber);
+                            } else {
+                              // 备用方法：创建临时文本区域
+                              const textArea = document.createElement('textarea');
+                              textArea.value = phoneNumber;
+                              textArea.style.position = 'fixed';
+                              textArea.style.left = '-999999px';
+                              textArea.style.top = '-999999px';
+                              document.body.appendChild(textArea);
+                              textArea.focus();
+                              textArea.select();
+                              document.execCommand('copy');
+                              document.body.removeChild(textArea);
+                            }
                             
                             // 显示成功提示
-                            alert('微信号已复制，正在打开微信...');
+                            alert('微信号已复制到剪贴板！');
                             
-                            // 尝试跳转到微信
-                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                            const isAndroid = /Android/.test(navigator.userAgent);
+                            // 延迟后尝试打开微信
+                            setTimeout(() => {
+                              const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                              const isAndroid = /Android/.test(navigator.userAgent);
+                              
+                              if (isIOS || isAndroid) {
+                                // 移动端尝试打开微信
+                                try {
+                                  window.location.href = 'weixin://';
+                                } catch (e) {
+                                  // 如果微信协议失败，提示用户手动打开
+                                  alert('请手动打开微信，在添加好友中粘贴微信号');
+                                }
+                              } else {
+                                // 桌面端提示
+                                alert('请使用手机微信添加好友，微信号已复制到剪贴板');
+                              }
+                            }, 500);
                             
-                            if (isIOS || isAndroid) {
-                              // 移动端尝试打开微信
-                              window.location.href = 'weixin://';
-                            } else {
-                              // 桌面端提示
-                              alert('请使用手机微信添加好友');
-                            }
                           } catch (err) {
-                            // 如果复制失败，使用备用方法
-                            const textArea = document.createElement('textarea');
-                            textArea.value = '15851817312';
-                            document.body.appendChild(textArea);
-                            textArea.select();
-                            document.execCommand('copy');
-                            document.body.removeChild(textArea);
-                            
-                            alert('微信号已复制，正在打开微信...');
-                            
-                            // 尝试跳转到微信
-                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                            const isAndroid = /Android/.test(navigator.userAgent);
-                            
-                            if (isIOS || isAndroid) {
-                              window.location.href = 'weixin://';
-                            } else {
-                              alert('请使用手机微信添加好友');
-                            }
+                            console.error('复制失败:', err);
+                            alert('复制失败，请手动复制微信号：15851817312');
                           }
                         }}
                       >
