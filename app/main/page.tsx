@@ -708,6 +708,13 @@ export default function ResumePage() {
                       <Badge variant="outline" className="project-role">{project.role}</Badge>
                     </div>
                   </div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-xs project-skill-tag">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="project-description mb-4 leading-relaxed text-justify">{project.description}</p>
