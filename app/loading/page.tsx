@@ -93,6 +93,11 @@ export default function LoadingPage() {
             <button
               onClick={() => router.push('/main')}
               className="group relative px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 md:py-1.5 bg-gradient-to-r from-blue-600/30 to-purple-600/30 hover:from-blue-600/50 hover:to-purple-600/50 text-blue-200 hover:text-white rounded-md text-xs sm:text-sm font-mono transition-all duration-300 border border-blue-500/50 hover:border-purple-400/70 backdrop-blur-sm shadow-md hover:shadow-purple-500/40 hover:scale-105"
+              style={{
+                WebkitBackdropFilter: 'blur(4px)',
+                backdropFilter: 'blur(4px)',
+                backgroundColor: 'rgba(0, 0, 0, 0.2)'
+              }}
             >
               {/* 按钮内容 */}
               <div className="relative flex items-center gap-1.5">

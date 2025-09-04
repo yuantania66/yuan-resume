@@ -2,6 +2,13 @@
 
 import { useState, useEffect } from "react"
 
+// 检测浏览器对 backdrop-filter 的支持
+const supportsBackdropFilter = () => {
+  if (typeof window === 'undefined') return true
+  return CSS.supports('backdrop-filter', 'blur(1px)') || 
+         CSS.supports('-webkit-backdrop-filter', 'blur(1px)')
+}
+
 // 类型定义
 interface WorkExperience {
   period: string
@@ -59,9 +66,13 @@ export default function ResumePage() {
   const [copyMessage, setCopyMessage] = useState("")
   const [copyPosition, setCopyPosition] = useState({ x: 0, y: 0, tooltipWidth: 0, tooltipHeight: 0 })
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [backdropFilterSupported, setBackdropFilterSupported] = useState(true)
 
   useEffect(() => {
     setMounted(true)
+    
+    // 检测浏览器对 backdrop-filter 的支持
+    setBackdropFilterSupported(supportsBackdropFilter())
     
     // 页面初始化时，延迟确保 DOM 完全渲染完成
     setTimeout(() => {
@@ -384,7 +395,7 @@ export default function ResumePage() {
         "支持 20个地级海关接入",
         '优化 "人机结合" 模式，强化贸易安全防线',
       ],
-      tags: ["AI训练平台1", "云边协同", "数据管理"],
+      tags: ["AI训练平台", "云边协同", "数据管理"],
     },
     {
       id: "container-inspection",
@@ -465,8 +476,9 @@ export default function ResumePage() {
         left: '0',
         right: '0',
         zIndex: 50,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        backdropFilter: 'blur(12px)',
+        backgroundColor: backdropFilterSupported ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.8)',
+        WebkitBackdropFilter: backdropFilterSupported ? 'blur(12px)' : 'none',
+        backdropFilter: backdropFilterSupported ? 'blur(12px)' : 'none',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}
     >
@@ -581,7 +593,7 @@ export default function ResumePage() {
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold text-balance">
                 <div className="block md:hidden space-y-2">
-                  <div className="hero-name">袁媛媛</div>
+                  <div className="hero-name">袁媛媛1</div>
                   <div className="text-white">AI产品经理</div>
                 </div>
                 <div className="hidden md:block">
@@ -1143,7 +1155,10 @@ export default function ResumePage() {
             left: `${copyPosition.x}px`,
             top: `${copyPosition.y}px`,
             width: `${copyPosition.tooltipWidth}px`,
-            minWidth: '180px'
+            minWidth: '180px',
+            WebkitBackdropFilter: backdropFilterSupported ? 'blur(12px)' : 'none',
+            backdropFilter: backdropFilterSupported ? 'blur(12px)' : 'none',
+            backgroundColor: backdropFilterSupported ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.95)'
           }}
         >
           <div className="flex items-center gap-1.5">

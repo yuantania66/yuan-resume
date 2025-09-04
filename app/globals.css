@@ -3,6 +3,41 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* backdrop-filter 兼容性支持 */
+@supports not (backdrop-filter: blur(1px)) {
+  /* 不支持 backdrop-filter 的浏览器降级方案 */
+  .hero-contact-item {
+    background: rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .hero-contact-item:hover {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  .project-skill-tag {
+    background: rgba(0, 0, 0, 0.2) !important;
+  }
+  
+  .project-skill-tag:hover {
+    background: rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* 导航栏降级 */
+  nav {
+    background: rgba(0, 0, 0, 0.8) !important;
+  }
+  
+  /* 工具提示降级 */
+  .tooltip {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
+  
+  /* 滚动按钮降级 */
+  .scroll-top-btn {
+    background: rgba(0, 0, 0, 0.8) !important;
+  }
+}
+
 /* 科技风格颜色变量 */
 :root {
   --tech-primary: #64c8ff;
@@ -432,6 +467,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   padding: 6px 12px;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
 }
@@ -541,6 +577,7 @@
 .tech-card {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 4px;
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   transition: all 0.3s ease;
   box-shadow: 
@@ -625,6 +662,7 @@
 .project-card {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   transition: all 0.3s ease;
   box-shadow: 
@@ -856,6 +894,7 @@
   transition: all 0.3s ease !important;
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
+  -webkit-backdrop-filter: blur(10px) !important;
   backdrop-filter: blur(10px) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
@@ -884,6 +923,7 @@
   transition: all 0.3s ease !important;
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
+  -webkit-backdrop-filter: blur(10px) !important;
   backdrop-filter: blur(10px) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
