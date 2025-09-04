@@ -895,7 +895,7 @@
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  backdrop-filter: blur(10px) !important;
+  /* backdrop-filter: blur(10px) !important; */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
