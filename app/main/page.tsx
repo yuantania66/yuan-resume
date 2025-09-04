@@ -458,21 +458,21 @@ export default function ResumePage() {
     <>
     {/* Navigation - 独立于页面内容 */}
     <nav 
-      className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10"
+      className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10 shadow-lg"
       style={{
         position: 'fixed',
         top: '0',
         left: '0',
         right: '0',
         zIndex: 50,
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
         backdropFilter: 'blur(12px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}
     >
-      <div className="max-w-6xl mx-auto px-6 py-4">
+      <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold rainbow-white">个人简历</div>
+          <div className="text-lg md:text-xl font-bold rainbow-white">个人简历</div>
           
           {/* 桌面端菜单 */}
           <div className="hidden md:flex space-x-8">
@@ -500,7 +500,7 @@ export default function ResumePage() {
           {/* 手机端菜单按钮 */}
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="md:hidden text-white hover:text-cyan-400 transition-colors duration-300"
+            className="md:hidden text-white hover:text-blue-300 transition-colors duration-300 p-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-purple-600/20 active:scale-95 touch-manipulation"
           >
             {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -508,8 +508,8 @@ export default function ResumePage() {
 
         {/* 手机端菜单 */}
         {showMobileMenu && (
-          <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
-            <div className="space-y-2">
+          <div className="md:hidden mt-2 pb-2 border-t border-blue-500/20 pt-2 animate-in slide-in-from-top-2 duration-300">
+            <div className="space-y-1">
               {[
                 { id: "hero", label: "首页" },
                 { id: "experience", label: "工作经历" },
@@ -524,10 +524,10 @@ export default function ResumePage() {
                     scrollToSection(item.id)
                     setShowMobileMenu(false)
                   }}
-                  className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  className={`block w-full text-left px-4 py-3 text-sm font-medium transition-all duration-300 active:scale-95 ${
                     mounted && activeSection === item.id 
-                      ? "bg-cyan-400/20 text-cyan-400 border border-cyan-400/30" 
-                      : "text-white hover:bg-white/10 hover:text-cyan-400"
+                      ? "bg-gradient-to-r from-blue-600/40 to-purple-600/40 text-white shadow-md shadow-blue-500/25 backdrop-blur-sm font-semibold" 
+                      : "text-white hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-purple-600/20 hover:text-blue-200"
                   }`}
                 >
                   {item.label}
