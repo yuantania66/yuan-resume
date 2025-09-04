@@ -1077,11 +1077,11 @@ export default function ResumePage() {
                           alt="微信二维码" 
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
-                        {/* 悬停提示 */}
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        {/* 长按提示 */}
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <div className="text-white text-xs text-center px-2">
-                            <div className="font-semibold mb-1">点击打开微信</div>
-                            <div className="text-xs opacity-80">长按复制微信号</div>
+                            <div className="font-semibold mb-1">微信号已复制</div>
+                            <div className="text-xs opacity-80">yuan_Tania</div>
                           </div>
                         </div>
                       </div>

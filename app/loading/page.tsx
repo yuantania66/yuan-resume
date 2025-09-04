@@ -85,7 +85,7 @@ export default function LoadingPage() {
       {/* 主要内容 - 电脑屏幕 */}
       <div className="relative z-10 bg-black border-0 rounded-xl">
         {/* 电脑屏幕框架 */}
-        <div className="bg-transparent border-4 border-[#333333] rounded-xl p-3 md:p-6 shadow-2xl w-[95vw] max-w-[700px] h-[60vh] max-h-[450px] mx-auto relative">
+        <div className="bg-transparent border-4 border-[#333333] rounded-xl p-3 md:p-6 shadow-2xl w-[95vw] max-w-[700px] h-[45vh] max-h-[350px] md:h-[50vh] md:max-h-[400px] mx-auto relative">
           
           {/* 控制按钮组 - 在显示屏框架的右下角 */}
           <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 z-20 flex flex-col items-end gap-1 md:gap-2">
