@@ -708,13 +708,6 @@ export default function ResumePage() {
                       <Badge variant="outline" className="project-role">{project.role}</Badge>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs project-skill-tag">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="project-description mb-4 leading-relaxed text-justify">{project.description}</p>
@@ -1095,7 +1088,7 @@ export default function ResumePage() {
                                 }
                               } else {
                                 // 桌面端提示
-                                alert('请使用手机微信添加好友，微信号已复制到剪贴板');
+                                alert('请打开微信添加好友，微信号已复制到剪贴板');
                               }
                             }, 500);
                             
