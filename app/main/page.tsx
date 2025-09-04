@@ -47,6 +47,8 @@ import {
   MessageSquare,
   ArrowLeft,
   ArrowUp,
+  Menu,
+  X,
 } from "lucide-react"
 
 export default function ResumePage() {
@@ -56,6 +58,7 @@ export default function ResumePage() {
   const [showCopySuccess, setShowCopySuccess] = useState(false)
   const [copyMessage, setCopyMessage] = useState("")
   const [copyPosition, setCopyPosition] = useState({ x: 0, y: 0, tooltipWidth: 0, tooltipHeight: 0 })
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -80,8 +83,14 @@ export default function ResumePage() {
         }
       }
       
-      // 控制返回顶部按钮的显示
-      setShowScrollTop(window.scrollY > 300)
+      // 控制返回顶部按钮的显示 - 滚动到工作经历区域时显示
+      const experienceSection = document.getElementById('experience')
+      if (experienceSection) {
+        const experienceRect = experienceSection.getBoundingClientRect()
+        setShowScrollTop(experienceRect.top <= 100)
+      } else {
+        setShowScrollTop(window.scrollY > 300)
+      }
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -205,13 +214,18 @@ export default function ResumePage() {
   }
 
   // 检测是否为移动设备
-  const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  }
+  const [isMobileDevice, setIsMobileDevice] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    }
+    setIsMobileDevice(checkMobile())
+  }, [])
 
   // 处理电话点击
   const handlePhoneClick = (event: React.MouseEvent) => {
-    if (isMobile()) {
+    if (isMobileDevice) {
       // 移动端直接拨打
       window.location.href = 'tel:+8615851817312'
     } else {
@@ -441,6 +455,90 @@ export default function ResumePage() {
   ]
 
   return (
+    <>
+    {/* Navigation - 独立于页面内容 */}
+    <nav 
+      className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10"
+      style={{
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        right: '0',
+        zIndex: 50,
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="text-xl font-bold rainbow-white">个人简历</div>
+          
+          {/* 桌面端菜单 */}
+          <div className="hidden md:flex space-x-8">
+            {[
+              { id: "hero", label: "首页" },
+              { id: "experience", label: "工作经历" },
+              { id: "projects", label: "项目经验" },
+              { id: "skills", label: "技能特长" },
+              { id: "about", label: "自我评价" },
+              { id: "contact", label: "联系方式" },
+            ].map((item) => (
+              <Tooltip key={item.id} content={`点击跳转到${item.label}区域`} position="bottom">
+                <button
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-sm font-medium nav-item ${
+                    mounted && activeSection === item.id ? "nav-active" : "tech-text-secondary"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              </Tooltip>
+            ))}
+          </div>
+
+          {/* 手机端菜单按钮 */}
+          <button
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="md:hidden text-white hover:text-cyan-400 transition-colors duration-300"
+          >
+            {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* 手机端菜单 */}
+        {showMobileMenu && (
+          <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+            <div className="space-y-2">
+              {[
+                { id: "hero", label: "首页" },
+                { id: "experience", label: "工作经历" },
+                { id: "projects", label: "项目经验" },
+                { id: "skills", label: "技能特长" },
+                { id: "about", label: "自我评价" },
+                { id: "contact", label: "联系方式" },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    scrollToSection(item.id)
+                    setShowMobileMenu(false)
+                  }}
+                  className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    mounted && activeSection === item.id 
+                      ? "bg-cyan-400/20 text-cyan-400 border border-cyan-400/30" 
+                      : "text-white hover:bg-white/10 hover:text-cyan-400"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+
     <div className="min-h-screen bg-background tech-grid relative">
       {/* 呼吸背景装饰元素 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -460,36 +558,6 @@ export default function ResumePage() {
           ))}
         </div>
       </div>
-      
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-xl font-bold rainbow-white">个人简历</div>
-            <div className="hidden md:flex space-x-8">
-              {[
-                { id: "hero", label: "首页" },
-                { id: "experience", label: "工作经历" },
-                { id: "projects", label: "项目经验" },
-                { id: "skills", label: "技能特长" },
-                { id: "about", label: "自我评价" },
-                { id: "contact", label: "联系方式" },
-              ].map((item) => (
-                <Tooltip key={item.id} content={`点击跳转到${item.label}区域`} position="bottom">
-                  <button
-                    onClick={() => scrollToSection(item.id)}
-                    className={`text-sm font-medium nav-item ${
-                      mounted && activeSection === item.id ? "nav-active" : "tech-text-secondary"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                </Tooltip>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <section id="hero" className="min-h-screen flex items-center justify-center px-6 relative">
@@ -512,9 +580,15 @@ export default function ResumePage() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold text-balance">
-                <span className="hero-name">袁媛媛</span>
-                <span className="text-white"> · </span>
-                <span className="text-white">AI产品经理</span>
+                <div className="block md:hidden space-y-2">
+                  <div className="hero-name">袁媛媛</div>
+                  <div className="text-white">AI产品经理</div>
+                </div>
+                <div className="hidden md:block">
+                  <span className="hero-name">袁媛媛</span>
+                  <span className="text-white"> · </span>
+                  <span className="text-white">AI产品经理</span>
+                </div>
               </h1>
               <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto text-balance">
                 8年AI/大数据产品经验
@@ -522,7 +596,7 @@ export default function ResumePage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Tooltip content={isMobile() ? "点击拨打电话" : "点击复制电话号码"} position="bottom">
+              <Tooltip content={isMobileDevice ? "点击拨打电话" : "点击复制电话号码"} position="bottom">
                 <div className="hero-contact-item">
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-white/70 hover:text-white transition-colors duration-300" />
@@ -871,12 +945,12 @@ export default function ResumePage() {
                     <div className="text-left">
                       <div className="font-semibold text-lg mb-1 text-white">电话</div>
                       <a 
-                        href={isMobile() ? "tel:+8615851817312" : "#"}
-                        onClick={!isMobile() ? (e) => { e.preventDefault(); copyPhoneNumber(e); } : undefined}
+                        href={isMobileDevice ? "tel:+8615851817312" : "#"}
+                        onClick={!isMobileDevice ? (e) => { e.preventDefault(); copyPhoneNumber(e); } : undefined}
                         className="text-white text-lg hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
                         target="_blank"
                         rel="noopener noreferrer"
-                        title={isMobile() ? "点击拨打电话" : "点击复制电话号码"}
+                        title={isMobileDevice ? "点击拨打电话" : "点击复制电话号码"}
                       >
                         158-5181-7312
                       </a>
@@ -953,23 +1027,6 @@ export default function ResumePage() {
           <p className="text-sm text-white/60 mt-2">Version 1.0.0</p>
         </div>
       </footer>
-      
-      {/* 返回顶部按钮 */}
-      {showScrollTop && (
-        <Tooltip content="点击返回页面顶部" position="left">
-          <Button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="fixed bottom-4 right-4 z-50 tech-scroll-top-btn"
-            style={{ position: 'fixed', bottom: '16px', right: '16px' }}
-            aria-label="返回顶部"
-          >
-            <div className="relative">
-              <ArrowUp className="w-4 h-4 text-white/90" />
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/50 to-blue-500/50 rounded-full blur-sm opacity-50"></div>
-            </div>
-          </Button>
-        </Tooltip>
-      )}
 
       {/* 复制成功提示 */}
       {showCopySuccess && (
@@ -994,5 +1051,42 @@ export default function ResumePage() {
         </div>
       )}
     </div>
+
+    {/* 返回顶部按钮 - 独立于页面内容 */}
+    {showScrollTop && (
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 99999,
+          width: '48px',
+          height: '48px',
+          backgroundColor: 'rgba(23, 248, 250, 0.2)',
+          border: '1px solid rgba(23, 248, 250, 0.3)',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '0 0 20px rgba(23, 248, 250, 0.3)',
+          backdropFilter: 'blur(10px)',
+          transition: 'all 0.3s ease'
+        }}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)'
+          e.currentTarget.style.boxShadow = '0 8px 30px rgba(23, 248, 250, 0.6)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0) scale(1)'
+          e.currentTarget.style.boxShadow = '0 0 20px rgba(23, 248, 250, 0.3)'
+        }}
+        title="点击返回页面顶部"
+      >
+        <ArrowUp className="w-5 h-5 text-white" />
+      </div>
+    )}
+    </>
   )
 }
