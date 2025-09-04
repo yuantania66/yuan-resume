@@ -845,26 +845,48 @@
   text-shadow: 0 0 10px rgba(23, 248, 250, 0.3);
 }
 
-/* 核心项目经验中的技能标签样式 */
+/* 核心项目经验中的技能标签样式 - 确保所有项目一致 */
 .project-skill-tag {
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-weight: 400;
-  padding: 4px 10px;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  font-weight: 400 !important;
+  padding: 4px 10px !important;
+  border-radius: 16px !important;
+  transition: all 0.3s ease !important;
+  font-size: 11px !important;
+  letter-spacing: 0.5px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
 .project-skill-tag:hover {
-  color: rgba(255, 255, 255, 1);
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 1) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 确保第一个项目的tag样式与其他项目完全一致 */
+#project-smart-customs .project-skill-tag {
+  color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  font-weight: 400 !important;
+  padding: 4px 10px !important;
+  border-radius: 16px !important;
+  transition: all 0.3s ease !important;
+  font-size: 11px !important;
+  letter-spacing: 0.5px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+#project-smart-customs .project-skill-tag:hover {
+  color: rgba(255, 255, 255, 1) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }
 
 /* 五彩斑斓的白色效果 */

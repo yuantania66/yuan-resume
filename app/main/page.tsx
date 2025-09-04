@@ -1036,7 +1036,7 @@ export default function ResumePage() {
                             await navigator.clipboard.writeText('yuan_Tania');
                             
                             // 显示成功提示
-                            alert('微信号已复制，请在微信添加好友中粘贴微信号，进行好友添加');
+                            alert('微信号已复制，请前往微信添加好友');
                             
                             // 尝试跳转到微信
                             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -1058,7 +1058,7 @@ export default function ResumePage() {
                             document.execCommand('copy');
                             document.body.removeChild(textArea);
                             
-                            alert('微信号已复制，请在微信添加好友中粘贴微信号，进行好友添加');
+                            alert('微信号已复制，请前往微信添加好友');
                             
                             // 尝试跳转到微信
                             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -1081,7 +1081,7 @@ export default function ResumePage() {
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <div className="text-white text-xs text-center px-2">
                             <div className="font-semibold mb-1">微信号已复制</div>
-                            <div className="text-xs opacity-80">yuan_Tania</div>
+                            <div className="text-xs opacity-80">请前往微信添加好友</div>
                           </div>
                         </div>
                       </div>
