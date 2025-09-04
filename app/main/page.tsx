@@ -1006,37 +1006,13 @@ export default function ResumePage() {
                       {/* 微信二维码 */}
                       <div 
                         className="w-32 h-32 overflow-hidden mx-auto cursor-pointer relative group"
-                        onClick={() => {
-                          // 尝试打开微信
-                          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                          const isAndroid = /Android/.test(navigator.userAgent);
-                          
-                          if (isIOS) {
-                            // iOS 尝试打开微信
-                            window.location.href = 'weixin://';
-                            setTimeout(() => {
-                              alert('请长按二维码保存到相册，然后在微信中扫描添加好友');
-                            }, 1000);
-                          } else if (isAndroid) {
-                            // Android 尝试打开微信
-                            window.location.href = 'weixin://';
-                            setTimeout(() => {
-                              alert('请长按二维码保存到相册，然后在微信中扫描添加好友');
-                            }, 1000);
-                          } else {
-                            // 桌面端提示
-                            alert('请使用手机微信扫描二维码添加好友');
-                          }
-                        }}
-                        onContextMenu={async (e) => {
-                          e.preventDefault();
-                          
+                        onClick={async () => {
                           try {
                             // 复制微信号到剪贴板
-                            await navigator.clipboard.writeText('yuan_Tania');
+                            await navigator.clipboard.writeText('15851817312');
                             
                             // 显示成功提示
-                            alert('微信号已复制，请前往微信添加好友');
+                            alert('微信号已复制，正在打开微信...');
                             
                             // 尝试跳转到微信
                             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -1052,13 +1028,56 @@ export default function ResumePage() {
                           } catch (err) {
                             // 如果复制失败，使用备用方法
                             const textArea = document.createElement('textarea');
-                            textArea.value = 'yuan_Tania';
+                            textArea.value = '15851817312';
                             document.body.appendChild(textArea);
                             textArea.select();
                             document.execCommand('copy');
                             document.body.removeChild(textArea);
                             
-                            alert('微信号已复制，请前往微信添加好友');
+                            alert('微信号已复制，正在打开微信...');
+                            
+                            // 尝试跳转到微信
+                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                            const isAndroid = /Android/.test(navigator.userAgent);
+                            
+                            if (isIOS || isAndroid) {
+                              window.location.href = 'weixin://';
+                            } else {
+                              alert('请使用手机微信添加好友');
+                            }
+                          }
+                        }}
+                        onContextMenu={async (e) => {
+                          e.preventDefault();
+                          
+                          try {
+                            // 复制微信号到剪贴板
+                            await navigator.clipboard.writeText('15851817312');
+                            
+                            // 显示成功提示
+                            alert('微信号已复制，正在打开微信...');
+                            
+                            // 尝试跳转到微信
+                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                            const isAndroid = /Android/.test(navigator.userAgent);
+                            
+                            if (isIOS || isAndroid) {
+                              // 移动端尝试打开微信
+                              window.location.href = 'weixin://';
+                            } else {
+                              // 桌面端提示
+                              alert('请使用手机微信添加好友');
+                            }
+                          } catch (err) {
+                            // 如果复制失败，使用备用方法
+                            const textArea = document.createElement('textarea');
+                            textArea.value = '15851817312';
+                            document.body.appendChild(textArea);
+                            textArea.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(textArea);
+                            
+                            alert('微信号已复制，正在打开微信...');
                             
                             // 尝试跳转到微信
                             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -1077,11 +1096,11 @@ export default function ResumePage() {
                           alt="微信二维码" 
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
-                        {/* 长按提示 */}
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        {/* 悬停提示 */}
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <div className="text-white text-xs text-center px-2">
-                            <div className="font-semibold mb-1">微信号已复制</div>
-                            <div className="text-xs opacity-80">请前往微信添加好友</div>
+                            <div className="font-semibold mb-1">点击复制微信号</div>
+                            <div className="text-xs opacity-80">并打开微信</div>
                           </div>
                         </div>
                       </div>

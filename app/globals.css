@@ -867,11 +867,11 @@
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }
 
-/* 确保第一个项目的tag样式与其他项目完全一致 */
+/* 确保第一个项目的tag样式与其他项目完全一致，但背景更透明 */
 #project-smart-customs .project-skill-tag {
   color: rgba(255, 255, 255, 0.8) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   font-weight: 400 !important;
   padding: 4px 10px !important;
   border-radius: 16px !important;
@@ -884,8 +884,8 @@
 
 #project-smart-customs .project-skill-tag:hover {
   color: rgba(255, 255, 255, 1) !important;
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }
 
@@ -1105,8 +1105,9 @@
 
 .cursor-horizontal-1::before {
   /* 水平向右，尾巴在左侧 */
-  left: -50px;
+  left: -80px;
   top: 0.5px;
+  width: 80px;
   background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
 }
 
@@ -1118,6 +1119,7 @@
   /* 水平向左，尾巴在右侧 */
   left: 3px;
   top: 0.5px;
+  width: 80px;
   background: linear-gradient(90deg, #64c8ff, rgba(100, 200, 255, 0.6), transparent);
 }
 
@@ -1127,8 +1129,9 @@
 
 .cursor-horizontal-3::before {
   /* 水平向右，尾巴在左侧 */
-  left: -50px;
+  left: -80px;
   top: 0.5px;
+  width: 80px;
   background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.6), #64c8ff);
 }
 
