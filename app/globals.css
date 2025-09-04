@@ -848,7 +848,7 @@
 /* 核心项目经验中的技能标签样式 - 所有项目统一 */
 .project-skill-tag {
   color: rgba(255, 255, 255, 0.8) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: transparent !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   font-weight: 400 !important;
   padding: 4px 10px !important;
@@ -862,7 +862,7 @@
 
 .project-skill-tag:hover {
   color: rgba(255, 255, 255, 1) !important;
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: transparent !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }
@@ -876,7 +876,7 @@
 #project-smart-test-drive .project-skill-tag,
 #project-network-analysis .project-skill-tag {
   color: rgba(255, 255, 255, 0.8) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: transparent !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   font-weight: 400 !important;
   padding: 4px 10px !important;
@@ -896,7 +896,7 @@
 #project-smart-test-drive .project-skill-tag:hover,
 #project-network-analysis .project-skill-tag:hover {
   color: rgba(255, 255, 255, 1) !important;
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: transparent !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }

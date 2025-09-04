@@ -384,7 +384,7 @@ export default function ResumePage() {
         "支持 20个地级海关接入",
         '优化 "人机结合" 模式，强化贸易安全防线',
       ],
-      tags: ["AI训练平台", "云边协同", "数据管理"],
+      tags: ["AI训练平台1", "云边协同", "数据管理"],
     },
     {
       id: "container-inspection",
