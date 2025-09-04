@@ -845,7 +845,7 @@
   text-shadow: 0 0 10px rgba(23, 248, 250, 0.3);
 }
 
-/* 核心项目经验中的技能标签样式 - 确保所有项目一致 */
+/* 核心项目经验中的技能标签样式 - 所有项目统一 */
 .project-skill-tag {
   color: rgba(255, 255, 255, 0.8) !important;
   background: rgba(255, 255, 255, 0.1) !important;
@@ -867,12 +867,17 @@
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }
 
-/* 确保第一个项目的tag样式与其他项目完全一致，但背景更透明 */
+/* 确保所有项目tag样式完全一致，覆盖任何特殊样式 */
+.project-card .project-skill-tag,
 #project-smart-customs .project-skill-tag,
-.project-card#project-smart-customs .project-skill-tag {
+#project-container-inspection .project-skill-tag,
+#project-vehicle-sentiment .project-skill-tag,
+#project-vehicle-data-platform .project-skill-tag,
+#project-smart-test-drive .project-skill-tag,
+#project-network-analysis .project-skill-tag {
   color: rgba(255, 255, 255, 0.8) !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   font-weight: 400 !important;
   padding: 4px 10px !important;
   border-radius: 16px !important;
@@ -883,35 +888,20 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
+.project-card .project-skill-tag:hover,
 #project-smart-customs .project-skill-tag:hover,
-.project-card#project-smart-customs .project-skill-tag:hover {
+#project-container-inspection .project-skill-tag:hover,
+#project-vehicle-sentiment .project-skill-tag:hover,
+#project-vehicle-data-platform .project-skill-tag:hover,
+#project-smart-test-drive .project-skill-tag:hover,
+#project-network-analysis .project-skill-tag:hover {
   color: rgba(255, 255, 255, 1) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
 }
 
-/* 额外的选择器确保第一个项目tag样式生效 */
-.project-card[id="project-smart-customs"] .project-skill-tag {
-  color: rgba(255, 255, 255, 0.8) !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  font-weight: 400 !important;
-  padding: 4px 10px !important;
-  border-radius: 16px !important;
-  transition: all 0.3s ease !important;
-  font-size: 11px !important;
-  letter-spacing: 0.5px !important;
-  backdrop-filter: blur(10px) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
-
-.project-card[id="project-smart-customs"] .project-skill-tag:hover {
-  color: rgba(255, 255, 255, 1) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
-}
+/* 所有核心项目经验的tag样式统一 */
 
 /* 五彩斑斓的白色效果 */
 .rainbow-white {
