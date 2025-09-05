@@ -943,6 +943,26 @@
 
 /* 所有核心项目经验的tag样式统一 */
 
+/* 滚动文本动画 */
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-text {
+  animation: scroll-text 15s linear infinite 5s;
+  display: inline-block;
+}
+
+/* 滚动文本悬停暂停 */
+.animate-scroll-text:hover {
+  animation-play-state: paused;
+}
+
 /* 五彩斑斓的白色效果 */
 .rainbow-white {
   background: linear-gradient(

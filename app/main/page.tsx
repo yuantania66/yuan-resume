@@ -551,6 +551,18 @@ export default function ResumePage() {
       </div>
     </nav>
 
+    {/* 手机端滚动公告 */}
+    <div className="md:hidden bg-black/10 backdrop-blur-md border-b border-white/20 shadow-lg mt-16">
+      <div className="relative">
+        <div className="animate-scroll-text text-xs text-white/90 py-2.5 whitespace-nowrap font-medium">
+          <svg className="w-3 h-3 text-white mr-2 inline-block align-middle" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM15.657 6.343a1 1 0 011.414 0A9.972 9.972 0 0119 12a9.972 9.972 0 01-1.929 5.657 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 12a7.971 7.971 0 00-1.343-4.243 1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+          <span className="inline-block align-middle">由于测试所覆盖的机型范围有限，若您在手机端遇到样式显示异常等问题，建议您暂时通过网页版浏览，由此带来的不便，恳请谅解。</span>
+        </div>
+      </div>
+    </div>
+
     <div className="min-h-screen bg-background tech-grid relative">
       {/* 呼吸背景装饰元素 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -603,7 +615,7 @@ export default function ResumePage() {
                 </div>
               </h1>
               <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto text-balance">
-                8年AI/大数据产品经验1
+                8年AI/大数据产品经验
               </p>
             </div>
 
