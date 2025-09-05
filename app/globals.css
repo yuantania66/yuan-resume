@@ -15,11 +15,11 @@
   }
   
   .project-skill-tag {
-    background: rgba(0, 0, 0, 0.2) !important;
+    /* background: rgba(0, 0, 0, 0.2) !important; */
   }
   
   .project-skill-tag:hover {
-    background: rgba(0, 0, 0, 0.3) !important;
+    /* background: rgba(0, 0, 0, 0.3) !important; */
   }
   
   /* 导航栏降级 */
@@ -894,16 +894,16 @@
   transition: all 0.3s ease !important;
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  /* -webkit-backdrop-filter: blur(10px) !important; */
   /* backdrop-filter: blur(10px) !important; */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important; */
 }
 
 .project-skill-tag:hover {
   color: rgba(255, 255, 255, 1) !important;
   background: transparent !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
+  /* box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important; */
 }
 
 /* 确保所有项目tag样式完全一致，覆盖任何特殊样式 */
@@ -923,9 +923,9 @@
   transition: all 0.3s ease !important;
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  /* -webkit-backdrop-filter: blur(10px) !important; */
   /* backdrop-filter: blur(10px) !important; */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important; */
 }
 
 .project-card .project-skill-tag:hover,
@@ -938,7 +938,7 @@
   color: rgba(255, 255, 255, 1) !important;
   background: transparent !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
+  /* box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important; */
 }
 
 /* 所有核心项目经验的tag样式统一 */

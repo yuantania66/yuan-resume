@@ -593,7 +593,7 @@ export default function ResumePage() {
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold text-balance">
                 <div className="block md:hidden space-y-2">
-                  <div className="hero-name">袁媛媛3</div>
+                  <div className="hero-name">袁媛媛</div>
                   <div className="text-white">AI产品经理</div>
                 </div>
                 <div className="hidden md:block">
