@@ -603,7 +603,7 @@ export default function ResumePage() {
                 </div>
               </h1>
               <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto text-balance">
-                8年AI/大数据产品经验
+                8年AI/大数据产品经验1
               </p>
             </div>
 
